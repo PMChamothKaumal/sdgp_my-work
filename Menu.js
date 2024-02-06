@@ -1,13 +1,31 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
 import React, { useState } from 'react';
 import { TextInput, Checkbox, Avatar, Card, IconButton } from 'react-native-paper';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 
+
+
 function Menu() {
+    const navigation = useNavigation();
+    const GoLoginOwner = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }]
+        })
+    }
+
+
+    const GoLoginTransporter = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "LoginT" }]
+        })
+    }
 
     return (
 
@@ -20,7 +38,7 @@ function Menu() {
                         <Text style={Styles.txt}>TeaSage</Text>
                     </View>
                     <View style={{ marginTop: 70 }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={GoLoginOwner}>
                             <View style={Styles.Inputs}>
                                 <Card.Title
                                     title="Tea Estate Owner"
@@ -31,7 +49,7 @@ function Menu() {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={GoLoginTransporter}>
                             <View style={Styles.Inputs}>
                                 <Card.Title
                                     title="Tea Transporter"

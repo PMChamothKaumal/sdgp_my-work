@@ -3,12 +3,20 @@ import React from 'react'
 import { TextInput } from 'react-native-paper';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 const Signup = () => {
+
+    const navigation = useNavigation();
+    const GoLogin = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }]
+        })
+    }
 
     return (
 
@@ -42,7 +50,7 @@ const Signup = () => {
                     </View>
 
                     <View style={{ flex: 1 }}>
-                        <Text style={Styles.foter}>Already Have An Account?<Text style={Styles.sign}>  Login</Text></Text>
+                        <Text style={Styles.foter}>Already Have An Account?<Text style={Styles.sign} onPress={GoLogin}>  Login</Text></Text>
                     </View>
 
                 </View>

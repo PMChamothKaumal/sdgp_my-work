@@ -2,13 +2,21 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, 
 import React, { useState } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 
-function Login() {
+function LoginT() {
+
+    const navigation = useNavigation();
+    const GoHome = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "HomeT" }]
+        })
+    }
 
     const [rememberMe, setRememberMe] = useState(false);
     return (
@@ -19,7 +27,7 @@ function Login() {
 
                     <View style={{ flex: 3 }}>
                         <View style={{ alignItems: "center", textAlign: "center" }}>
-                            <Text style={Styles.txt3}>Tea Estate Owner's</Text>
+                            <Text style={Styles.txt3}>Tea Transporter's</Text>
                         </View>
                         <Text style={Styles.txt}>Login</Text>
                     </View>
@@ -41,7 +49,7 @@ function Login() {
                     </View>
 
                     <View style={{ flex: 4, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center" }}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center" }} onPress={GoHome}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 
@@ -128,4 +136,4 @@ const Styles = StyleSheet.create({
     }
 })
 
-export default Login;
+export default LoginT;
