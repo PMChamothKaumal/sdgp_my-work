@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
+import Axios from "react-native-axios"
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -18,6 +19,26 @@ function Login() {
         })
     }
 
+    const [Username, setUsername] = useState('')
+    const [Password, setPassword] = useState('')
+    const [loginSt, setLoginSt] = useState('')
+    const [nameError, setNameError] = useState(null);
+    const [pwError, setpwError] = useState(null);
+
+    const LoginData = () => {
+        Axios.post('http://192.168.1.102:3000/api/teasage_database/TeaEstateOwner_Validation', {
+            method: 'POST',
+            username: Username,
+            password: Password,
+        })
+            .then((response) => {
+                if (response.data.message) {
+                    setLoginSt(response.data.message);
+                } else {
+                    { GoHome() }
+                }
+            })
+    }
 
     const GoHome = () => {
         navigation.reset({
@@ -26,6 +47,32 @@ function Login() {
         })
     }
 
+
+    const validate = () => {
+        if (Username.trim() === "") {
+            setNameError("Username Required.");
+        } else if (Password.trim() === "") {
+            setNameError(null);
+            setpwError("Password Required.");
+        } else {
+            setpwError(null);
+        }
+    }
+
+    const merge = () => {
+        validate();
+        LoginData();
+    };
+
+    const txt = () => {
+        if (loginSt.trim() === "Wrong user name or password") {
+            Alert.alert('Invalid Credentials', 'Please check your username and password.');
+            return <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>  {loginSt}</Text>;
+
+        } else {
+            return <Text style={{ color: "green" }}>{loginSt}</Text>;
+        }
+    }
 
     const [rememberMe, setRememberMe] = useState(false);
     return (
@@ -43,10 +90,12 @@ function Login() {
 
                     <View style={{ flex: 3, marginTop: 60 }}>
                         <Text style={Styles.txt2}>    Tea Estate ID:</Text>
-                        <TextInput mode="outlined" label="Username:" right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="Username:" onChangeText={(data) => { setUsername(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        {!!nameError && (<Text style={{ color: "red" }}>   {nameError}</Text>)}
 
                         <Text style={Styles.txt2}>    Password:</Text>
-                        <TextInput mode="outlined" label="Password:" secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+                        {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
 
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Checkbox.Android
@@ -58,9 +107,10 @@ function Login() {
                     </View>
 
                     <View style={{ flex: 4, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center" }} onPress={GoHome}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center" }} onPress={merge}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
+                        {txt()}
 
                     </View>
 
