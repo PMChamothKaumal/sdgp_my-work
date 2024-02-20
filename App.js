@@ -12,6 +12,7 @@ import Login from './Login';
 import Signup from './SignUp';
 import LoginT from './LoginT';
 import HomeT from './HomeT';
+import HomeO from './HomeO';
 
 
 
@@ -73,6 +74,8 @@ const App = () => {
             <Stack.Screen name="LoginT" component={LoginT} options={{ headerShown: false }} />
             <Stack.Screen name="Root" component={Root} options={{ headerShown: false }} />
             <Stack.Screen name="HomeT" component={HomeT} options={{ headerShown: false }} />
+            <Stack.Screen name="HomeO" component={HomeT} options={{ headerShown: false }} />
+
           </Stack.Navigator>
         </NavigationContainer>
       )}

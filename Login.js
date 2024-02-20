@@ -26,7 +26,7 @@ function Login() {
     const [pwError, setpwError] = useState(null);
 
     const LoginData = () => {
-        Axios.post('http://192.168.1.102:3000/api/teasage_database/TeaEstateOwner_Validation', {
+        Axios.post('http://192.168.1.104:3000/api/teasage_database/TeaEstateOwner_Validation', {
             method: 'POST',
             username: Username,
             password: Password,
@@ -43,7 +43,7 @@ function Login() {
     const GoHome = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeT" }]
+            routes: [{ name: "HomeO" }]
         })
     }
 
