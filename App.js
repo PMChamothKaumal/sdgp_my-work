@@ -9,10 +9,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import Menu from './Menu';
 import Login from './Login';
-import Signup from './SignUp';
 import LoginT from './LoginT';
 import HomeT from './HomeT';
 import HomeO from './HomeO';
+import ForgotPw from './ForgotPw';
+import VerifyPw from './Veryfy';
+import NewPassword from './NewPassword';
+
 
 
 
@@ -57,11 +60,11 @@ const App = () => {
           <View style={styles.view2}>
             <BarIndicator color='white' />
             <View style={{ alignItems: "center", textAlign: "center", marginTop: 30 }}>
-              <Image source={require("./Images/5.jpg")} style={{ alignItems: "center", width: 180, height: 180 }} />
+              <Image source={require("./Images/teasage.jpg")} style={{ alignItems: "center", width: 180, height: 180 }} />
             </View>
           </View>
           <View>
-            <Text style={{ fontSize: 24, marginTop: 200, color: "white", fontWeight: "bold", textAlign: "center", fontFamily: "serif" }}>Powerd By AMAD</Text>
+            <Text style={{ fontSize: 24, marginTop: 200, color: "white", fontWeight: "bold", textAlign: "center", fontFamily: "serif" }}>Powerd By TeaSage</Text>
           </View>
         </View>) : (
 
@@ -70,11 +73,14 @@ const App = () => {
           <Stack.Navigator>
             <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
             <Stack.Screen name="LoginT" component={LoginT} options={{ headerShown: false }} />
             <Stack.Screen name="Root" component={Root} options={{ headerShown: false }} />
             <Stack.Screen name="HomeT" component={HomeT} options={{ headerShown: false }} />
-            <Stack.Screen name="HomeO" component={HomeT} options={{ headerShown: false }} />
+            <Stack.Screen name="HomeO" component={HomeO} options={{ headerShown: false }} />
+            <Stack.Screen name="ForgotPw" component={ForgotPw} options={{ headerShown: false }} />
+            <Stack.Screen name="newPassword" component={NewPassword} options={{ headerShown: false }} />
+            <Stack.Screen name="VerifyPw" component={VerifyPw} options={{ headerShown: false }} />
+
 
           </Stack.Navigator>
         </NavigationContainer>

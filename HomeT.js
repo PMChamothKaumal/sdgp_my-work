@@ -13,7 +13,7 @@ function HomeT() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/5.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                 </View>

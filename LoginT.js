@@ -12,6 +12,14 @@ function LoginT() {
 
     const navigation = useNavigation();
 
+    const GoForgotPw = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "ForgotPw" }]
+        })
+    }
+
+
     const [Username, setUsername] = useState('')
     const [Password, setPassword] = useState('')
     const [loginSt, setLoginSt] = useState('')
@@ -19,7 +27,7 @@ function LoginT() {
     const [pwError, setpwError] = useState(null);
 
     const LoginData = () => {
-        Axios.post('http://192.168.1.104:3000/api/teasage_database/TeaTransporter_Validation', {
+        Axios.post('http://localhost:3000/api/sdgp_database/TeaTransporter_Validation', {
             method: 'POST',
             username: Username,
             password: Password,
@@ -87,15 +95,12 @@ function LoginT() {
 
                         <Text style={Styles.txt2}>    Password:</Text>
                         <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+
+                        <TouchableOpacity onPress={GoForgotPw}>
+                            <Text style={{ color: "white", marginLeft: 258, fontSize: 15, marginTop: 11, fontWeight: "bold" }}>forgot password? </Text>
+                        </TouchableOpacity>
                         {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Checkbox.Android
-                                status={rememberMe ? 'checked' : 'unchecked'}
-                                onPress={() => setRememberMe(!rememberMe)} />
-                            <Text style={{ marginLeft: 58 }}>Remember Me</Text>
-
-                        </View>
                     </View>
 
                     <View style={{ flex: 4, }}>
@@ -106,9 +111,6 @@ function LoginT() {
 
                     </View>
 
-                    <View style={{ flex: 1 }}>
-                        <Text style={Styles.foter}>Don't You Have An Account?<Text style={Styles.sign}>   Sign_Up</Text></Text>
-                    </View>
                 </View>
             </ImageBackground>
         </KeyboardAwareScrollView>
@@ -122,7 +124,7 @@ const Styles = StyleSheet.create({
     },
     txt: {
         fontSize: 70,
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
         alignItems: "center",
@@ -132,7 +134,7 @@ const Styles = StyleSheet.create({
     },
     txt3: {
         fontSize: 20,
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
         alignItems: "center",

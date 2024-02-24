@@ -42,7 +42,7 @@ function Menu() {
                             <View style={Styles.Inputs}>
                                 <Card.Title
                                     title="Tea Estate Owner"
-                                    titleStyle={{ fontSize: 25, textAlign: 'center', marginTop: 55 }}
+                                    titleStyle={{ fontSize: 25, textAlign: 'center', marginTop: 55, fontWeight: "bold" }}
                                 //left={(props) => <Avatar.Icon {...props} icon="folder" />}
 
                                 />
@@ -53,7 +53,7 @@ function Menu() {
                             <View style={Styles.Inputs}>
                                 <Card.Title
                                     title="Tea Transporter"
-                                    titleStyle={{ fontSize: 25, textAlign: 'center', marginTop: 55 }}
+                                    titleStyle={{ fontSize: 25, textAlign: 'center', marginTop: 55, fontWeight: "bold" }}
                                 //left={(props) => <Avatar.Icon {...props} icon="folder" />}
                                 />
                             </View>
@@ -96,7 +96,7 @@ const Styles = StyleSheet.create({
         marginTop: 40,
         marginLeft: 20,
         borderRadius: 10,
-        backgroundColor: 'white',
+        backgroundColor: 'rgb(201, 215, 221)',
         color: "white",
         fontSize: 18,
         width: 360,

@@ -12,10 +12,11 @@ const screenWidth = Dimensions.get('window').width;
 function Login() {
 
     const navigation = useNavigation();
-    const GoSignup = () => {
+
+    const GoForgotPw = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "Signup" }]
+            routes: [{ name: "ForgotPw" }]
         })
     }
 
@@ -26,7 +27,7 @@ function Login() {
     const [pwError, setpwError] = useState(null);
 
     const LoginData = () => {
-        Axios.post('http://192.168.1.104:3000/api/teasage_database/TeaEstateOwner_Validation', {
+        Axios.post('http://192.168.1.104:3000/api/sdgp_database/TeaEstateOwner_Validation', {
             method: 'POST',
             username: Username,
             password: Password,
@@ -95,28 +96,26 @@ function Login() {
 
                         <Text style={Styles.txt2}>    Password:</Text>
                         <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+
+                        <TouchableOpacity onPress={GoForgotPw}>
+                            <Text style={{ color: "white", marginLeft: 258, fontSize: 15, marginTop: 11, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
+                        </TouchableOpacity>
+
                         {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Checkbox.Android
-                                status={rememberMe ? 'checked' : 'unchecked'}
-                                onPress={() => setRememberMe(!rememberMe)} />
-                            <Text style={{ marginLeft: 248, color: "white", fontWeight: "bold" }}>Remember Me</Text>
 
-                        </View>
                     </View>
 
                     <View style={{ flex: 4, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center" }} onPress={merge}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={merge}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
+
+
                         {txt()}
 
                     </View>
 
-                    <View style={{ flex: 1 }}>
-                        <Text style={Styles.foter}>Don't You Have An Account?<Text style={Styles.sign} onPress={GoSignup}>   Sign_Up</Text></Text>
-                    </View>
                 </View>
             </ImageBackground>
         </KeyboardAwareScrollView>
