@@ -1,14 +1,34 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
-
+import Axios from "react-native-axios";
 
 function VerifyPw() {
+
+
+    const [loading, setLoading] = useState(false);
+    const [timer, setTimer] = useState(45);
+
+    const startLoading = () => {
+        setLoading(true);
+        const intervalId = setInterval(() => {
+            setTimer(prevTimer => prevTimer - 1);
+        }, 1000);
+
+        setTimeout(() => {
+            clearInterval(intervalId);
+            setLoading(false);
+        }, 45000); // 60 seconds
+    };
+
+    useEffect(() => {
+        startLoading();
+    }, []);
 
     const navigation = useNavigation();
 
@@ -18,6 +38,7 @@ function VerifyPw() {
             routes: [{ name: "newPassword" }]
         })
     }
+
 
 
     return (
@@ -41,13 +62,22 @@ function VerifyPw() {
                         <TextInput mode="outlined" label="enter 4 Digit Code" right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                     </View>
 
-                    <TouchableOpacity>
-                        <Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16, fontWeight: "bold", textDecorationLine: "underline" }}>Resend Code </Text>
-                    </TouchableOpacity>
+
+
+                    {loading ? (
+                        <View><Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16 }}>Resend In: {timer} </Text></View>
+                    ) : (
+                        <View>
+                            <TouchableOpacity>
+                                <Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16, fontWeight: "bold", textDecorationLine: "underline" }}>Resend Code </Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
 
                     <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={GoNewPw}>
                         <Text style={Styles.btn}>Verify</Text>
                     </TouchableOpacity>
+
 
 
                 </View>

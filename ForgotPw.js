@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
-
+import Axios from "react-native-axios";
 
 function ForgotPw() {
 
@@ -18,6 +18,29 @@ function ForgotPw() {
             routes: [{ name: "VerifyPw" }]
         })
     }
+
+    const [Email, setEmail] = useState('');
+    const [loginStatus, setLoginStatus] = useState('');
+
+    const checkEmail = () => {
+        Axios.post('http://192.168.1.104:3000/api/sdgp_database/Check_email_validations', {
+            method: 'POST',
+            Email: Email,
+        })
+            .then((response) => {
+                if (response.data.length > 0) {
+                    setLoginStatus('Success: Email exists in the database.');
+                    GoVeryfyMail();
+                } else {
+                    setLoginStatus('Error: Email does not exist in the database.');
+                }
+            })
+            .catch((error) => {
+
+                setLoginStatus('Error: Email does not exist in the database.');
+
+            });
+    };
 
 
     return (
@@ -39,12 +62,13 @@ function ForgotPw() {
 
                     <View style={{ marginTop: 22 }}>
                         <Text style={Styles.txt2}>    Tea Estate ID:</Text>
-                        <TextInput mode="outlined" label="enter your Id here" right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="enter your Id here" onChangeText={(data) => { setEmail(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                     </View>
 
-                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={GoVeryfyMail}>
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={checkEmail}>
                         <Text style={Styles.btn}>Send</Text>
                     </TouchableOpacity>
+                    <Text>{loginStatus}</Text>
 
 
                 </View>
