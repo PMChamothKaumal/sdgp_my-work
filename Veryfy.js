@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, 
 import React, { useState, useEffect } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -10,6 +10,9 @@ import Axios from "react-native-axios";
 
 function VerifyPw() {
 
+    const route = useRoute();
+    const { Otp_code } = route.params;
+    const [Otp, setOtp] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [timer, setTimer] = useState(45);
@@ -32,11 +35,18 @@ function VerifyPw() {
 
     const navigation = useNavigation();
 
+
     const GoNewPw = () => {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "newPassword" }]
-        })
+
+        if (Otp_code === Otp) {
+            console.log("valid input");
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "newPassword" }]
+            })
+        } else {
+            console.log("invalid input");
+        }
     }
 
 
@@ -59,7 +69,7 @@ function VerifyPw() {
                     </View>
 
                     <View style={{ marginTop: 22 }}>
-                        <TextInput mode="outlined" label="enter 4 Digit Code" right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="enter 4 Digit Code" onChangeText={(data) => { setOtp(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                     </View>
 
 
@@ -70,7 +80,9 @@ function VerifyPw() {
                         <View>
                             <TouchableOpacity>
                                 <Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16, fontWeight: "bold", textDecorationLine: "underline" }}>Resend Code </Text>
+
                             </TouchableOpacity>
+
                         </View>
                     )}
 

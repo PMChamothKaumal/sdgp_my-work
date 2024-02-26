@@ -12,34 +12,45 @@ function ForgotPw() {
 
     const navigation = useNavigation();
 
-    const GoVeryfyMail = () => {
+    const GoVeryfyMail = (otp) => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "VerifyPw" }]
+            routes: [{ name: "VerifyPw", params: { Otp_code: otp } }]
         })
     }
 
     const [Email, setEmail] = useState('');
     const [loginStatus, setLoginStatus] = useState('');
 
-    const checkEmail = () => {
-        Axios.post('http://192.168.1.104:3000/api/sdgp_database/Check_email_validations', {
-            method: 'POST',
-            Email: Email,
-        })
-            .then((response) => {
-                if (response.data.length > 0) {
-                    setLoginStatus('Success: Email exists in the database.');
-                    GoVeryfyMail();
-                } else {
-                    setLoginStatus('Error: Email does not exist in the database.');
-                }
-            })
-            .catch((error) => {
+    const [responseMessage, setResponseMessage] = useState('');
 
-                setLoginStatus('Error: Email does not exist in the database.');
-
+    const checkEmail = async () => {
+        try {
+            const response = await fetch('http://192.168.1.104:3000/api/sdgp_database/Check_email_validations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Email: Email }) // Set the appropriate email here
             });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setResponseMessage(data.message);
+                setLoginStatus(data.message);
+                console.log(data.message);
+                GoVeryfyMail(data.OTP);
+
+                // You can handle the OTP received in data.OTP here
+            } else {
+                console.error('Error:', data.message);
+                setResponseMessage('Error occurred while checking emails');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setResponseMessage('Error occurred while checking emails');
+        }
     };
 
 
@@ -61,13 +72,14 @@ function ForgotPw() {
                     </View>
 
                     <View style={{ marginTop: 22 }}>
-                        <Text style={Styles.txt2}>    Tea Estate ID:</Text>
-                        <TextInput mode="outlined" label="enter your Id here" onChangeText={(data) => { setEmail(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        <Text style={Styles.txt2}>    Registered Email:</Text>
+                        <TextInput mode="outlined" label="enter your email" onChangeText={(data) => { setEmail(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                     </View>
 
                     <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={checkEmail}>
                         <Text style={Styles.btn}>Send</Text>
                     </TouchableOpacity>
+
                     <Text>{loginStatus}</Text>
 
 
