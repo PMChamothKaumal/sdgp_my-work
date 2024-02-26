@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, 
 import React, { useState } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -10,12 +10,16 @@ import Axios from "react-native-axios";
 
 function ForgotPw() {
 
+    const route = useRoute();
+    const { Subject } = route.params;
+
+
     const navigation = useNavigation();
 
     const GoVeryfyMail = (otp) => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "VerifyPw", params: { Otp_code: otp } }]
+            routes: [{ name: "VerifyPw", params: { Otp_code: otp, email: Email, Seperate: Subject } }]
         })
     }
 
@@ -26,12 +30,17 @@ function ForgotPw() {
 
     const checkEmail = async () => {
         try {
-            const response = await fetch('http://192.168.1.104:3000/api/sdgp_database/Check_email_validations', {
+            const requestBody = {
+                Email: Email,
+                sub: Subject
+            };
+
+            const response = await fetch('http://192.168.1.103:3000/api/sdgp_database/Check_email_validations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ Email: Email }) // Set the appropriate email here
+                body: JSON.stringify(requestBody)
             });
 
             const data = await response.json();
@@ -44,8 +53,8 @@ function ForgotPw() {
 
                 // You can handle the OTP received in data.OTP here
             } else {
-                console.error('Error:', data.message);
-                setResponseMessage('Error occurred while checking emails');
+                //console.error('Error:', data.message);
+                setLoginStatus(data.message);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -80,7 +89,7 @@ function ForgotPw() {
                         <Text style={Styles.btn}>Send</Text>
                     </TouchableOpacity>
 
-                    <Text>{loginStatus}</Text>
+                    <Text style={{ color: "red", marginTop: 12, fontWeight: "bold", fontSize: 16 }}>    {loginStatus}</Text>
 
 
                 </View>

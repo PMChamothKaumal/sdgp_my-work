@@ -2,13 +2,57 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, 
 import React, { useState } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Axios from "react-native-axios";
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 
 function NewPassword() {
+
+
+    const route = useRoute();
+    const { email } = route.params;
+    const { Sep } = route.params;
+
+
+    const [newPassword, setnewPassword] = useState('');
+    const [conPassword, setconPassword] = useState('');
+    const [loginSt, setLoginSt] = useState('')
+
+
+    const navigation = useNavigation();
+
+    const GoLogin = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }]
+        })
+    }
+
+
+    const UpdatePassword = () => {
+        Axios.post('http://192.168.1.103:3000/api/sdgp_database/Update_TeaEstateOwner_Passwords', {
+            method: 'POST',
+            Email: email,
+            newPassword: newPassword,
+            conPassword: conPassword,
+            Validation: Sep,
+        })
+            .then((response) => {
+                if (response.data.message) {
+                    setLoginSt(response.data.message);
+                    console.log(response.data.message);
+                    GoLogin();
+                } else {
+                    GoLogin();
+                }
+            })
+            .catch((error) => {
+                console.error('Error updating password:', error);
+            });
+    };
 
     return (
 
@@ -29,13 +73,13 @@ function NewPassword() {
 
                     <View style={{ marginTop: 22 }}>
                         <Text style={Styles.txt2}>    New Password: </Text>
-                        <TextInput mode="outlined" label="enter new password" right={<TextInput.Affix text="/15" />} secureTextEntry style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="enter new password" onChangeText={(data) => { setnewPassword(data) }} right={<TextInput.Affix text="/15" />} secureTextEntry style={Styles.Inputs} required />
 
                         <Text style={Styles.txt2}>    Confirm Password: </Text>
-                        <TextInput mode="outlined" label="Re enter password" right={<TextInput.Affix text="/15" />} secureTextEntry style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="Re enter password" onChangeText={(data) => { setconPassword(data) }} right={<TextInput.Affix text="/15" />} secureTextEntry style={Styles.Inputs} required />
                     </View>
 
-                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }}>
+                    <TouchableOpacity onPress={UpdatePassword} style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }}>
                         <Text style={Styles.btn}>Save</Text>
                     </TouchableOpacity>
 

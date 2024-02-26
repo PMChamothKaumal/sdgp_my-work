@@ -16,7 +16,7 @@ function Login() {
     const GoForgotPw = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "ForgotPw" }]
+            routes: [{ name: "ForgotPw", params: { Subject: "TeaEstateOwner" } }]
         })
     }
 
@@ -27,7 +27,7 @@ function Login() {
     const [pwError, setpwError] = useState(null);
 
     const LoginData = () => {
-        Axios.post('http://192.168.1.104:3000/api/sdgp_database/TeaEstateOwner_Validation', {
+        Axios.post('http://192.168.1.103:3000/api/sdgp_database/TeaEstateOwner_Validation', {
             method: 'POST',
             username: Username,
             password: Password,

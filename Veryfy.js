@@ -12,9 +12,16 @@ function VerifyPw() {
 
     const route = useRoute();
     const { Otp_code } = route.params;
+    const { Seperate } = route.params;
+
     const [Otp, setOtp] = useState('');
 
+    const [otpCode, setOtpCode] = useState('');
+
+    const { email } = route.params;
+
     const [loading, setLoading] = useState(false);
+    const [resending, setResending] = useState(false);
     const [timer, setTimer] = useState(45);
 
     const startLoading = () => {
@@ -36,13 +43,45 @@ function VerifyPw() {
     const navigation = useNavigation();
 
 
+    const checkEmail = async () => {
+        try {
+            const response = await fetch('http://192.168.1.103:3000/api/sdgp_database/Check_email_validations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Email: email }) // Set the appropriate email here
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setResending(true);
+                console.log(data.message);
+                console.log(data.OTP);
+                setOtpCode(data.OTP);
+                console.log(otpCode);
+                startLoading();
+
+                // You can handle the OTP received in data.OTP here
+            } else {
+                //console.error('Error:', data.message);
+                console.error('Error:', error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
+
     const GoNewPw = () => {
 
-        if (Otp_code === Otp) {
+        if ((Otp_code === Otp) || (otpCode === Otp)) {
             console.log("valid input");
             navigation.reset({
                 index: 0,
-                routes: [{ name: "newPassword" }]
+                routes: [{ name: "newPassword", params: { email: email, Sep: Seperate } }]
             })
         } else {
             console.log("invalid input");
@@ -65,7 +104,7 @@ function VerifyPw() {
 
                     <View style={{ marginTop: 10 }}>
                         <Text style={Styles.txt}>Please Enter The 4 Digit Code Sent To  </Text>
-                        <Text style={Styles.txt}>pmchamoth@gmail.com</Text>
+                        <Text style={Styles.txt}>{email}</Text>
                     </View>
 
                     <View style={{ marginTop: 22 }}>
@@ -74,11 +113,13 @@ function VerifyPw() {
 
 
 
-                    {loading ? (
-                        <View><Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16 }}>Resend In: {timer} </Text></View>
+                    {resending || loading ? (
+                        <TouchableOpacity>
+                            <View><Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16 }}>Resend In: {timer} </Text></View>
+                        </TouchableOpacity>
                     ) : (
                         <View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={checkEmail}>
                                 <Text style={{ color: "black", textAlign: "center", fontSize: 15, marginTop: 16, fontWeight: "bold", textDecorationLine: "underline" }}>Resend Code </Text>
 
                             </TouchableOpacity>

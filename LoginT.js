@@ -15,7 +15,7 @@ function LoginT() {
     const GoForgotPw = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "ForgotPw" }]
+            routes: [{ name: "ForgotPw", params: { Subject: "TeaTransporter" } }]
         })
     }
 
@@ -104,7 +104,7 @@ function LoginT() {
                     </View>
 
                     <View style={{ flex: 4, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center" }} onPress={merge}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={merge}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
                         {txt()}
