@@ -4,6 +4,7 @@ import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
 import Axios from "react-native-axios"
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -48,6 +49,13 @@ function Login() {
         })
     }
 
+    const GoMenu = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Menu" }]
+        })
+    }
+
 
     const validate = () => {
         if (Username.trim() === "") {
@@ -79,8 +87,15 @@ function Login() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/5.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('./Images/backg4.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
+
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
+                        <TouchableOpacity onPress={GoMenu}>
+                            <Ionicons name='arrow-back' color={"black"} size={30} />
+                        </TouchableOpacity>
+
+                    </View>
 
                     <View style={{ flex: 3 }}>
                         <View style={{ alignItems: "center", textAlign: "center" }}>
@@ -89,7 +104,7 @@ function Login() {
                         <Text style={Styles.txt}>Login</Text>
                     </View>
 
-                    <View style={{ flex: 3, marginTop: 60 }}>
+                    <View style={{ flex: 3, marginTop: 40 }}>
                         <Text style={Styles.txt2}>    Tea Estate ID:</Text>
                         <TextInput mode="outlined" label="Username:" onChangeText={(data) => { setUsername(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                         {!!nameError && (<Text style={{ color: "red" }}>   {nameError}</Text>)}
@@ -98,7 +113,7 @@ function Login() {
                         <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
 
                         <TouchableOpacity onPress={GoForgotPw}>
-                            <Text style={{ color: "white", marginLeft: 258, fontSize: 15, marginTop: 11, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
+                            <Text style={{ color: "black", marginLeft: 258, fontSize: 15, marginTop: 11, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
                         </TouchableOpacity>
 
                         {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
@@ -107,7 +122,7 @@ function Login() {
                     </View>
 
                     <View style={{ flex: 4, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={merge}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 16 }} onPress={GoHome}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 
@@ -129,7 +144,7 @@ const Styles = StyleSheet.create({
     },
     txt: {
         fontSize: 70,
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
         alignItems: "center",
@@ -139,7 +154,7 @@ const Styles = StyleSheet.create({
     },
     txt3: {
         fontSize: 20,
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
         alignItems: "center",
@@ -152,7 +167,7 @@ const Styles = StyleSheet.create({
         margin: 10,
         borderRadius: 40,
         backgroundColor: 'rgb(221, 230, 237)',
-        color: "white",
+        color: "black",
         marginTop: -0,
         fontSize: 18,
     },
@@ -185,7 +200,7 @@ const Styles = StyleSheet.create({
     },
     txt2: {
         fontSize: 16,
-        color: "rgb(221, 230, 237)",
+        color: "black",
         marginTop: 10,
         fontWeight: "bold"
     },

@@ -4,6 +4,7 @@ import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Axios from "react-native-axios";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -31,6 +32,12 @@ function NewPassword() {
         })
     }
 
+    const GoVeryfyMail = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "VerifyPw" }]
+        })
+    }
 
     const UpdatePassword = () => {
         Axios.post('http://192.168.1.103:3000/api/sdgp_database/Update_TeaEstateOwner_Passwords', {
@@ -59,6 +66,14 @@ function NewPassword() {
         <KeyboardAwareScrollView>
             <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
+
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
+                        <TouchableOpacity onPress={GoVeryfyMail}>
+                            <Ionicons name='arrow-back' color={"black"} size={30} />
+                        </TouchableOpacity>
+
+                    </View>
+
 
                     <Text style={Styles.header}>Create New Password</Text>
 

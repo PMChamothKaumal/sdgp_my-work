@@ -30,7 +30,7 @@ function Menu() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/2.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('./Images/backg6.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                     <View >
@@ -40,6 +40,7 @@ function Menu() {
                     <View style={{ marginTop: 70 }}>
                         <TouchableOpacity onPress={GoLoginOwner}>
                             <View style={Styles.Inputs}>
+
                                 <Card.Title
                                     title="Tea Estate Owner"
                                     titleStyle={{ fontSize: 25, textAlign: 'center', marginTop: 55, fontWeight: "bold" }}

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -22,6 +23,14 @@ function ForgotPw() {
             routes: [{ name: "VerifyPw", params: { Otp_code: otp, email: Email, Seperate: Subject } }]
         })
     }
+
+    const GoHome = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "HomeT" }]
+        })
+    }
+
 
     const [Email, setEmail] = useState('');
     const [loginStatus, setLoginStatus] = useState('');
@@ -68,6 +77,13 @@ function ForgotPw() {
         <KeyboardAwareScrollView>
             <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
+
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
+                        <TouchableOpacity>
+                            <Ionicons name='arrow-back' color={"black"} size={30} />
+                        </TouchableOpacity>
+
+                    </View>
 
                     <Text style={Styles.header}>Forgot Password</Text>
 

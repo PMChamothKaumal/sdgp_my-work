@@ -15,6 +15,7 @@ import HomeO from './HomeO';
 import ForgotPw from './ForgotPw';
 import VerifyPw from './Veryfy';
 import NewPassword from './NewPassword';
+import TeaEstateOwnerDeatils from './TeaEstateOwnerDetails';
 
 
 
@@ -60,7 +61,7 @@ const App = () => {
           <View style={styles.view2}>
             <BarIndicator color='white' />
             <View style={{ alignItems: "center", textAlign: "center", marginTop: 30 }}>
-              <Image source={require("./Images/teasage.jpg")} style={{ alignItems: "center", width: 180, height: 180 }} />
+              <Image source={require("./Images/logo1.png")} style={{ alignItems: "center", width: 180, height: 180 }} />
             </View>
           </View>
           <View>
@@ -80,7 +81,7 @@ const App = () => {
             <Stack.Screen name="ForgotPw" component={ForgotPw} options={{ headerShown: false }} />
             <Stack.Screen name="newPassword" component={NewPassword} options={{ headerShown: false }} />
             <Stack.Screen name="VerifyPw" component={VerifyPw} options={{ headerShown: false }} />
-
+            <Stack.Screen name="TeaStateOwnerDetails" component={TeaEstateOwnerDeatils} options={{ headerShown: false }} />
 
           </Stack.Navigator>
         </NavigationContainer>

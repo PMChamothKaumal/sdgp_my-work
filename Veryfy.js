@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -88,13 +89,26 @@ function VerifyPw() {
         }
     }
 
-
+    const GoForgotPw = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "ForgotPw" }]
+        })
+    }
 
     return (
 
         <KeyboardAwareScrollView>
             <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
+
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
+                        <TouchableOpacity onPress={GoForgotPw}>
+                            <Ionicons name='arrow-back' color={"black"} size={30} />
+                        </TouchableOpacity>
+
+                    </View>
+
 
                     <Text style={Styles.header}>Verify Your Email</Text>
 
