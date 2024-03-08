@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, FlatList } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { TextInput, FAB, Button, Menu, Divider, PaperProvider, Appbar, Modal, MD3Colors, Portal, Card, IconButton } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -7,6 +7,8 @@ import GetLocation from 'react-native-get-location'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
+
+
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -18,6 +20,18 @@ function HomeT() {
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
+
+    const [selectId, setSelectId] = useState("Select Id: ");
+    const [isClicked, setIsClicked] = useState(false);
+    const [data, setdata] = useState(Dataset);
+
+    const Dataset = [
+        { Id: "001" },
+        { Id: "002" },
+        { Id: "003" },
+        { Id: "004" }
+
+    ]
 
     const location = () => {
         GetLocation.getCurrentPosition({
@@ -33,12 +47,14 @@ function HomeT() {
             })
     }
 
+    const img = require('./Images/weight.jpeg');
     useEffect(() => {
-        location();
+
     }, []);
 
 
     const navigation = useNavigation();
+    const [image, setImage] = useState(null);
 
     const GoTeaEstateOwnerDetails = () => {
         navigation.reset({
@@ -64,7 +80,7 @@ function HomeT() {
             } else {
                 let imageUri = response.uri || response.assets?.[0]?.uri;
                 //setSelectedImage(imageUri);
-                console.log(imageUri);
+                console.log("ImageURI:" + imageUri);
             }
         });
     }
@@ -106,11 +122,37 @@ function HomeT() {
 
                         <View style={{ marginTop: 100 }}>
                             <Text style={Styles.txt2}>    Tea Estate ID:</Text>
-                            <TextInput mode="outlined" label="ID:" onChangeText={(data) => { setUsername(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+
+                            <View>
+                                <TouchableOpacity style={Styles.drop} onPress={() => { setIsClicked(!isClicked) }}>
+                                    <Text>{selectId}</Text>
+                                    {isClicked ? (
+                                        <Image source={require('./Images/up.png')} style={Styles.icon} />
+                                    ) : (
+                                        <Image source={require('./Images/down.png')} style={Styles.icon} />
+                                    )}
+                                </TouchableOpacity>
+
+                                {isClicked ? (
+                                    <View style={Styles.dropdownarea}>
+                                        <FlatList
+                                            data={data}
+                                            renderItem={({ item }) => {
+                                                return (
+                                                    <TouchableOpacity style={Styles.items}>
+                                                        <Text>{item.Id}</Text>
+                                                    </TouchableOpacity>
+                                                );
+                                            }}
+                                            keyExtractor={(item) => item.Id}
+                                        />
+                                    </View>
+                                ) : null}
+                            </View>
 
 
                             <Text style={Styles.txt2}>    Tea waight:</Text>
-                            <TextInput mode="outlined" label="Tea weight" onChangeText={(data) => { setPassword(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
+                            <TextInput mode="outlined" label="Tea weight" right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
 
                             <TouchableOpacity onPress={handleCameraLaunch} style={{ marginTop: 8 }}>
                                 <Text style={Styles.btn1}>Capture Tea weight</Text>
@@ -123,6 +165,11 @@ function HomeT() {
 
                         </View>
                     </PaperProvider>
+
+                    <View style={{ marginBottom: 150, fontSize: 20 }}>
+                        <Text>Text Recognition</Text>
+
+                    </View>
                 </View>
             </ImageBackground>
         </KeyboardAwareScrollView>
@@ -180,6 +227,41 @@ const Styles = StyleSheet.create({
         textAlign: 'center',
         borderRadius: 10,
         fontWeight: 'bold',
+    },
+    drop: {
+        width: "90%",
+        height: 50,
+        borderRadius: 10,
+        borderWidth: 0.5,
+        borderColor: "black",
+        alignSelf: 'center',
+        marginTop: 50,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: 'center',
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    icon: {
+        width: 20,
+        height: 20
+    },
+    dropdownarea: {
+        width: '90%',
+        height: 300,
+        borderRadius: 10,
+        marginTop: 20,
+        backgroundColor: '#fff',
+        elevation: 5,
+        alignSelf: "center"
+    },
+    items: {
+        width: '85%',
+        height: 50,
+        borderBottomWidth: 0.2,
+        borderBottomColor: '#8e8e8e',
+        alignSelf: "center",
+        justifyContent: "center"
     }
 })
 

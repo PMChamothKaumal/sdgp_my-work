@@ -16,6 +16,8 @@ import ForgotPw from './ForgotPw';
 import VerifyPw from './Veryfy';
 import NewPassword from './NewPassword';
 import TeaEstateOwnerDeatils from './TeaEstateOwnerDetails';
+import AboutUs from './AboutUs';
+import Contact from './Contact';
 
 
 
@@ -28,8 +30,8 @@ const Drawer = createDrawerNavigator();
 function Root() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={Menu} options={{ headerShown: false }} />
-      <Drawer.Screen name="About" component={Login} options={{ headerStyle: { backgroundColor: 'gray', } }} />
+      <Drawer.Screen name="Home" component={Menu} options={{ headerShown: true }} />
+      <Drawer.Screen name="AboutUs" component={AboutUs} options={{ headerStyle: { backgroundColor: 'gray', } }} />
     </Drawer.Navigator>
   );
 }
@@ -82,7 +84,7 @@ const App = () => {
             <Stack.Screen name="newPassword" component={NewPassword} options={{ headerShown: false }} />
             <Stack.Screen name="VerifyPw" component={VerifyPw} options={{ headerShown: false }} />
             <Stack.Screen name="TeaStateOwnerDetails" component={TeaEstateOwnerDeatils} options={{ headerShown: false }} />
-
+            <Stack.Screen name="Contact" component={Contact} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

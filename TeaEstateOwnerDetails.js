@@ -16,7 +16,11 @@ function TeaEstateOwnerDeatils() {
 
     const [selectedId, setSelectedId] = useState();
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [DATA, setDATA] = useState([]);
+
+    const [data, setData] = useState([]);
+    const [masterData, setmasterData] = useState([]);
+    const [search, setsearch] = useState('')
+
 
     const Item = ({ item, onPress, backgroundColor, textColor }) => (
         <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
@@ -39,8 +43,6 @@ function TeaEstateOwnerDeatils() {
     }
 
 
-
-
     useEffect(() => {
         GetDetails();
     }, []);
@@ -49,9 +51,31 @@ function TeaEstateOwnerDeatils() {
 
         fetch('http://192.168.1.100:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
-            .then((json) => setDATA(json))
+            .then((responseJson) => {
+                const sortedData = responseJson;
+                setData(sortedData);
+                setmasterData(sortedData);
+            });
 
     }
+
+
+    const searchFilter = (text) => {
+        if (text) {
+            const newData = masterData.filter((item) => {
+                const itemData = item.username ? item.username.toLowerCase()
+                    : ''.toLowerCase();
+                const textData = text.toLowerCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setData(newData);
+            setsearch(text)
+        } else {
+            setData(masterData);
+            setsearch(text);
+        }
+    }
+
 
 
     const renderItem = ({ item }) => {
@@ -82,15 +106,16 @@ function TeaEstateOwnerDeatils() {
                     <View style={{ marginTop: 10 }}>
                         <Searchbar
                             placeholder="Search"
-                            onChangeText={setSearchQuery}
-                            value={searchQuery}
+                            onChangeText={(text) => searchFilter(text)}
+                            value={search}
                         />
 
                     </View>
+
                 </View>
                 <View style={{ marginTop: 20, borderRadius: 20 }}>
                     <FlatList
-                        data={DATA}
+                        data={data}
                         renderItem={renderItem}
                         keyExtractor={item => item.TeaEstateId}
                         extraData={selectedId}
@@ -130,7 +155,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         color: "black"
-
+    },
+    drop: {
+        width: "90%",
+        height: 50,
+        borderRadius: 10,
+        borderWidth: 0.5,
+        borderColor: "black",
+        alignSelf: 'center',
+        marginTop: 50,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: 'center',
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    icon: {
+        width: 20,
+        height: 20
     }
 });
 
