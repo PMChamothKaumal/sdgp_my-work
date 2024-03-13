@@ -99,7 +99,7 @@ function VerifyPw() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
@@ -113,7 +113,7 @@ function VerifyPw() {
                     <Text style={Styles.header}>Verify Your Email</Text>
 
                     <View style={{ marginTop: 10, overflow: 'hidden', backgroundColor: "transparent" }}>
-                        <Image source={require("./Images/verify.png")} style={{ width: 420, height: 340 }} />
+                        <Image source={require("../Images/verify.png")} style={{ width: 420, height: 340 }} />
                     </View>
 
                     <View style={{ marginTop: 10 }}>

@@ -64,7 +64,7 @@ function NewPassword() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
@@ -78,7 +78,7 @@ function NewPassword() {
                     <Text style={Styles.header}>Create New Password</Text>
 
                     <View style={{ marginTop: 10, overflow: 'hidden', backgroundColor: "transparent" }}>
-                        <Image source={require("./Images/new.png")} style={{ alignItems: "center", width: 400, height: 320 }} />
+                        <Image source={require("../Images/new.png")} style={{ alignItems: "center", width: 400, height: 320 }} />
                     </View>
 
                     <View style={{ marginTop: 0 }}>

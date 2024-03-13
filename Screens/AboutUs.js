@@ -10,12 +10,12 @@ const AboutUs = () => {
 
     return (
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/backg3.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/backg3.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={{ flex: 1 }}>
 
                     <View style={Styles.view}>
                         <Text style={Styles.ab}>About_Me</Text>
-                        <Image style={Styles.logo} source={require('./Images/1.jpg')} />
+                        <Image style={Styles.logo} source={require('../Images/1.jpg')} />
                         <Text style={Styles.txtName}>P.M.Chamoth Kaumal..</Text>
                         <Text style={Styles.txtName}>Mobile Application Developer</Text>
                     </View>

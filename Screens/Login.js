@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, PermissionsAndroid } from 'react-native'
 import React, { useState } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
 import Axios from "react-native-axios"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocation from '@react-native-community/geolocation';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -21,16 +22,59 @@ function Login() {
         })
     }
 
-    const [Username, setUsername] = useState('')
+    const [Email, setEmail] = useState('')
     const [Password, setPassword] = useState('')
     const [loginSt, setLoginSt] = useState('')
     const [nameError, setNameError] = useState(null);
     const [pwError, setpwError] = useState(null);
 
+    const Permission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: ' Location Permission',
+                    message:
+                        ' needs access to your camera ',
+
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the camera');
+                getCurrentLocation();
+            } else {
+                console.log('Location permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
+
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const getCurrentLocation = () => {
+
+        Geolocation.getCurrentPosition(
+            position => {
+                const { latitude, longitude } = position.coords;
+                setCurrentLocation({ latitude, longitude })
+                console.log(latitude, longitude)
+            },
+            error => alert('Error', error.message),
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        )
+    }
+
+
+
+
+
     const LoginData = () => {
         Axios.post('http://192.168.1.103:3000/api/sdgp_database/TeaEstateOwner_Validation', {
             method: 'POST',
-            username: Username,
+            Email: Email,
             password: Password,
         })
             .then((response) => {
@@ -43,6 +87,8 @@ function Login() {
     }
 
     const GoHome = () => {
+        Permission();
+
         navigation.reset({
             index: 0,
             routes: [{ name: "HomeO" }]
@@ -58,7 +104,7 @@ function Login() {
 
 
     const validate = () => {
-        if (Username.trim() === "") {
+        if (Email.trim() === "") {
             setNameError("Username Required.");
         } else if (Password.trim() === "") {
             setNameError(null);
@@ -71,6 +117,7 @@ function Login() {
     const merge = () => {
         validate();
         LoginData();
+
     };
 
     const txt = () => {
@@ -87,7 +134,7 @@ function Login() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/backg4.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/backg4.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
@@ -105,8 +152,9 @@ function Login() {
                     </View>
 
                     <View style={{ flex: 3, marginTop: 40 }}>
-                        <Text style={Styles.txt2}>    Tea Estate ID:</Text>
-                        <TextInput mode="outlined" label="Username:" onChangeText={(data) => { setUsername(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+
+                        <Text style={Styles.txt2}>    Email:</Text>
+                        <TextInput mode="outlined" label="Email:" onChangeText={(data) => { setEmail(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                         {!!nameError && (<Text style={{ color: "red" }}>   {nameError}</Text>)}
 
                         <Text style={Styles.txt2}>    Password:</Text>
@@ -125,7 +173,6 @@ function Login() {
                         <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 16 }} onPress={GoHome}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
-
 
                         {txt()}
 

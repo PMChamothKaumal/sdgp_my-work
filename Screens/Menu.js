@@ -30,7 +30,7 @@ function Menu() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/backg6.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/backg6.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                     <View >

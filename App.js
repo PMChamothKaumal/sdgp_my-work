@@ -7,17 +7,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
-import Menu from './Menu';
-import Login from './Login';
-import LoginT from './LoginT';
-import HomeT from './HomeT';
-import HomeO from './HomeO';
-import ForgotPw from './ForgotPw';
-import VerifyPw from './Veryfy';
-import NewPassword from './NewPassword';
-import TeaEstateOwnerDeatils from './TeaEstateOwnerDetails';
-import AboutUs from './AboutUs';
-import Contact from './Contact';
+import Menu from './Screens/Menu';
+import Login from './Screens/Login';
+import LoginT from './Screens/LoginT';
+import HomeT from './Screens/HomeT';
+import HomeO from './Screens/HomeO';
+import ForgotPw from './Screens/ForgotPw';
+import VerifyPw from './Screens/Veryfy';
+import NewPassword from './Screens/NewPassword';
+import TeaEstateOwnerDeatils from './Screens/TeaEstateOwnerDetails';
+import AboutUs from './Screens/AboutUs';
+import Contact from './Screens/Contact';
+import WeatherData from './Screens/WeatherData';
 
 
 
@@ -85,6 +86,7 @@ const App = () => {
             <Stack.Screen name="VerifyPw" component={VerifyPw} options={{ headerShown: false }} />
             <Stack.Screen name="TeaStateOwnerDetails" component={TeaEstateOwnerDeatils} options={{ headerShown: false }} />
             <Stack.Screen name="Contact" component={Contact} options={{ headerShown: false }} />
+            <Stack.Screen name="WeatherData" component={WeatherData} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

@@ -10,9 +10,9 @@ function LocationDeatils() {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
-                    title: 'Cool Photo App Location Permission',
+                    title: ' Location Permission',
                     message:
-                        'Cool Photo App needs access to your camera ',
+                        ' needs access to your camera ',
 
                     buttonNeutral: 'Ask Me Later',
                     buttonNegative: 'Cancel',

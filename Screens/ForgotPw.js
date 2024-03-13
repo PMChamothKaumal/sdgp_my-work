@@ -24,10 +24,10 @@ function ForgotPw() {
         })
     }
 
-    const GoHome = () => {
+    const GoMenu = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeT" }]
+            routes: [{ name: "Menu" }]
         })
     }
 
@@ -75,11 +75,11 @@ function ForgotPw() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/back.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/back.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={GoMenu}>
                             <Ionicons name='arrow-back' color={"black"} size={30} />
                         </TouchableOpacity>
 
@@ -88,7 +88,7 @@ function ForgotPw() {
                     <Text style={Styles.header}>Forgot Password</Text>
 
                     <View style={{ marginTop: 10, overflow: 'hidden', backgroundColor: "transparent" }}>
-                        <Image source={require("./Images/forgot.png")} style={{ alignItems: "center", width: 400, height: 320 }} />
+                        <Image source={require("../Images/forgot.png")} style={{ alignItems: "center", width: 400, height: 320 }} />
                     </View>
 
                     <View style={{ marginTop: 6 }}>

@@ -21,8 +21,8 @@ function HomeT() {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
 
-    const [selectId, setSelectId] = useState("Select Id: ");
     const [isClicked, setIsClicked] = useState(false);
+    const [selectId, setSelectId] = useState('Select ID');
     const [data, setdata] = useState(Dataset);
 
     const Dataset = [
@@ -30,8 +30,7 @@ function HomeT() {
         { Id: "002" },
         { Id: "003" },
         { Id: "004" }
-
-    ]
+    ];
 
     const location = () => {
         GetLocation.getCurrentPosition({
@@ -47,7 +46,7 @@ function HomeT() {
             })
     }
 
-    const img = require('./Images/weight.jpeg');
+    const img = require('../Images/weight.jpeg');
     useEffect(() => {
 
     }, []);
@@ -63,6 +62,12 @@ function HomeT() {
         })
     }
 
+    const GoMainMenu = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Menu" }]
+        })
+    }
 
     const handleCameraLaunch = () => {
         const options = {
@@ -88,7 +93,7 @@ function HomeT() {
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
 
 
@@ -114,7 +119,7 @@ function HomeT() {
                                 anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
                                 <Menu.Item onPress={GoTeaEstateOwnerDetails} title="Tea Estate Owner Details" />
                                 <Menu.Item onPress={() => { }} title="Estate Location" />
-                                <Menu.Item onPress={() => { }} title="Item 3" />
+                                <Menu.Item onPress={GoMainMenu} title="Log Out" />
                                 <Menu.Item onPress={() => { }} title="Item 4" />
                             </Menu>
                         </View>
@@ -124,30 +129,30 @@ function HomeT() {
                             <Text style={Styles.txt2}>    Tea Estate ID:</Text>
 
                             <View>
-                                <TouchableOpacity style={Styles.drop} onPress={() => { setIsClicked(!isClicked) }}>
-                                    <Text>{selectId}</Text>
+                                <TouchableOpacity style={Styles.drop} onPress={() => setIsClicked(!isClicked)}>
+                                    <Text style={{ fontSize: 17 }}>    {selectId}</Text>
                                     {isClicked ? (
-                                        <Image source={require('./Images/up.png')} style={Styles.icon} />
+                                        <Image source={require('../Images/up.png')} style={Styles.icon} />
                                     ) : (
-                                        <Image source={require('./Images/down.png')} style={Styles.icon} />
+                                        <Image source={require('../Images/down.png')} style={Styles.icon} />
                                     )}
                                 </TouchableOpacity>
 
-                                {isClicked ? (
+                                {isClicked && (
                                     <View style={Styles.dropdownarea}>
                                         <FlatList
-                                            data={data}
+                                            data={Dataset} // Use Dataset as data source
                                             renderItem={({ item }) => {
                                                 return (
-                                                    <TouchableOpacity style={Styles.items}>
-                                                        <Text>{item.Id}</Text>
+                                                    <TouchableOpacity style={Styles.items} onPress={() => { setSelectId(item.Id); setIsClicked(false) }}>
+                                                        <Text style={{ fontSize: 16 }}>{item.Id}</Text>
                                                     </TouchableOpacity>
                                                 );
                                             }}
                                             keyExtractor={(item) => item.Id}
                                         />
                                     </View>
-                                ) : null}
+                                )}
                             </View>
 
 
@@ -165,11 +170,6 @@ function HomeT() {
 
                         </View>
                     </PaperProvider>
-
-                    <View style={{ marginBottom: 150, fontSize: 20 }}>
-                        <Text>Text Recognition</Text>
-
-                    </View>
                 </View>
             </ImageBackground>
         </KeyboardAwareScrollView>
@@ -192,7 +192,7 @@ const Styles = StyleSheet.create({
     txt2: {
         fontSize: 16,
         color: "black",
-        marginTop: 10,
+        marginTop: 16,
         fontWeight: "bold"
     },
     btn: {
@@ -229,31 +229,33 @@ const Styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     drop: {
-        width: "90%",
-        height: 50,
-        borderRadius: 10,
+        width: 370,
+        height: 48,
         borderWidth: 0.5,
-        borderColor: "black",
         alignSelf: 'center',
-        marginTop: 50,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: 'center',
-        paddingLeft: 15,
-        paddingRight: 15,
+        marginTop: 8,
+        borderRadius: 3,
+        backgroundColor: 'rgb(221, 230, 237)',
+        color: "black",
+        fontSize: 18,
     },
     icon: {
         width: 20,
-        height: 20
+        height: 20,
+        marginRight: 16
     },
     dropdownarea: {
-        width: '90%',
-        height: 300,
+        width: '80%',
+        height: 200,
         borderRadius: 10,
         marginTop: 20,
-        backgroundColor: '#fff',
+        backgroundColor: 'rgb(221, 230, 237)',
         elevation: 5,
-        alignSelf: "center"
+        alignSelf: "center",
+
     },
     items: {
         width: '85%',

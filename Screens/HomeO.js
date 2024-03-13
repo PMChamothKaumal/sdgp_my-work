@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 
+
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
@@ -28,35 +29,24 @@ function HomeO() {
         })
     }
 
-
-    async function fetchWeatherData() {
-        setLoaded(false);
-        const API = 'https://api.openweathermap.org/data/2.5/weather?q=Colombo&appid=37f1b19aefb8e746792424bb7eb037c3'
-        try {
-            const response = await fetch(API);
-            if (response.status == 200) {
-                const data = await response.json();
-                setWeatherData(data);
-                console.log(weatherData);
-            } else {
-                setWeatherData(null);
-            }
-            setLoaded(true);
-
-        } catch (error) {
-            console.log(error);
-        }
+    const GoWeatherData = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "WeatherData" }]
+        })
     }
 
-    useEffect(() => {
-        fetchWeatherData();
-        //console.log(weatherData);
-    }, [])
+    const GoMainMenu = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Menu" }]
+        })
+    }
 
     return (
 
         <KeyboardAwareScrollView>
-            <ImageBackground source={require('./Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
+            <ImageBackground source={require('../Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
                 <View style={Styles.container}>
                     <PaperProvider>
                         <View style={{ marginLeft: 10, marginTop: 10 }}>
@@ -78,15 +68,16 @@ function HomeO() {
                                 onDismiss={closeMenu}
                                 anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
                                 <Menu.Item onPress={() => { }} title="Past Tea Data" />
-                                <Menu.Item onPress={() => { }} title="Weather Forecast" />
+                                <Menu.Item onPress={GoWeatherData} title="Weather Forecast" />
                                 <Menu.Item onPress={() => { }} title="Fertilizer Plan" />
                                 <Menu.Item onPress={GoContactPage} title="Contact Factory" />
+                                <Menu.Item onPress={GoMainMenu} title="Log Out" />
                             </Menu>
                         </View>
 
                         <View style={{ marginTop: 20, marginLeft: 15 }}>
                             <Text style={{ fontSize: 20, marginBottom: 6, color: "black", fontWeight: 'bold' }}>Hello,</Text>
-                            <Text style={{ fontSize: 18, marginBottom: 10, color: "black", fontWeight: 'bold' }}>  Minchu Paca</Text>
+                            <Text style={{ fontSize: 18, marginBottom: 10, color: "black", fontWeight: 'bold' }}>  Tea Estate Owner,</Text>
                         </View>
 
                         <Card style={{ marginTop: 30, width: 390, height: 580, backgroundColor: 'transparent' }}>

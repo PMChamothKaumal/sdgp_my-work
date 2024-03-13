@@ -7,6 +7,7 @@ import GetLocation from 'react-native-get-location'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -23,11 +24,28 @@ function TeaEstateOwnerDeatils() {
 
 
     const Item = ({ item, onPress, backgroundColor, textColor }) => (
+
+
         <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
 
             <Text style={styles.text}> Tea Estate Id: <Text>{item.TeaEstateId}</Text></Text>
-            <Text style={styles.text}>State Owner Name: {item.username}</Text>
-            <Text style={styles.text}>State Address: </Text>
+            <Text style={styles.text}>State Owner Name: {item.Username}</Text>
+
+
+            <MapView
+                style={{ width: 342, height: 160, marginTop: 15 }}
+                initialRegion={{
+                    latitude: parseFloat(item.Latitude),
+                    longitude: parseFloat(item.Longitude),
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+            >
+                <Marker
+                    coordinate={{ latitude: parseFloat(item.Latitude), longitude: parseFloat(item.Longitude) }}
+                    title='Marker'
+                />
+            </MapView>
 
         </TouchableOpacity>
     );
@@ -49,7 +67,7 @@ function TeaEstateOwnerDeatils() {
 
     const GetDetails = () => {
 
-        fetch('http://192.168.1.100:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('http://192.168.1.103:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;
@@ -63,7 +81,7 @@ function TeaEstateOwnerDeatils() {
     const searchFilter = (text) => {
         if (text) {
             const newData = masterData.filter((item) => {
-                const itemData = item.username ? item.username.toLowerCase()
+                const itemData = item.Username ? item.Username.toLowerCase()
                     : ''.toLowerCase();
                 const textData = text.toLowerCase();
                 return itemData.indexOf(textData) > -1;
@@ -83,18 +101,20 @@ function TeaEstateOwnerDeatils() {
         const color = item.TeaEstateId === selectedId ? 'white' : 'black';
 
         return (
-
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.TeaEstateId)}
-                backgroundColor={backgroundColor}
-                textColor={color}
-            />
+            <View >
+                <Item
+                    item={item}
+                    onPress={() => setSelectedId(item.TeaEstateId)}
+                    backgroundColor={backgroundColor}
+                    textColor={color}
+                    height={120}
+                />
+            </View>
         );
     };
 
     return (
-        <ImageBackground source={require('./Images/backg1.jpg')} resizeMode="cover" style={styles.image}>
+        <ImageBackground source={require('../Images/backg1.jpg')} resizeMode="cover" style={styles.image}>
             <View style={styles.container}>
 
 
@@ -121,6 +141,9 @@ function TeaEstateOwnerDeatils() {
                         extraData={selectedId}
                     />
                 </View>
+
+
+
             </View>
         </ImageBackground>
 
