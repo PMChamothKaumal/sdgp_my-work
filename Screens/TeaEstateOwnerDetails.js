@@ -32,20 +32,25 @@ function TeaEstateOwnerDeatils() {
             <Text style={styles.text}>State Owner Name: {item.Username}</Text>
 
 
-            <MapView
-                style={{ width: 342, height: 160, marginTop: 15 }}
-                initialRegion={{
-                    latitude: parseFloat(item.Latitude),
-                    longitude: parseFloat(item.Longitude),
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
-            >
-                <Marker
-                    coordinate={{ latitude: parseFloat(item.Latitude), longitude: parseFloat(item.Longitude) }}
-                    title='Marker'
-                />
-            </MapView>
+            {item.Latitude !== null && item.Longitude !== null ? (
+                <MapView
+                    style={{ width: 342, height: 160, marginTop: 15 }}
+                    initialRegion={{
+                        latitude: parseFloat(item.Latitude),
+                        longitude: parseFloat(item.Longitude),
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                >
+                    <Marker
+                        coordinate={{ latitude: parseFloat(item.Latitude), longitude: parseFloat(item.Longitude) }}
+                        title='Marker'
+                    />
+                </MapView>
+            ) : (
+                <Text>Location Not Found</Text>
+            )}
+
 
         </TouchableOpacity>
     );
@@ -67,7 +72,7 @@ function TeaEstateOwnerDeatils() {
 
     const GetDetails = () => {
 
-        fetch('http://192.168.1.103:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('http://10.31.9.153:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;

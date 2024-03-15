@@ -23,14 +23,20 @@ function HomeT() {
 
     const [isClicked, setIsClicked] = useState(false);
     const [selectId, setSelectId] = useState('Select ID');
-    const [data, setdata] = useState(Dataset);
+    const [data, setdata] = useState('');
 
-    const Dataset = [
-        { Id: "001" },
-        { Id: "002" },
-        { Id: "003" },
-        { Id: "004" }
-    ];
+    const GetEstateId = () => {
+
+        fetch('http://192.168.1.101:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                const sortedData = responseJson;
+                setdata(sortedData);
+
+            });
+
+    }
+
 
     const location = () => {
         GetLocation.getCurrentPosition({
@@ -46,8 +52,8 @@ function HomeT() {
             })
     }
 
-    const img = require('../Images/weight.jpeg');
     useEffect(() => {
+        GetEstateId();
 
     }, []);
 
@@ -92,87 +98,89 @@ function HomeT() {
 
     return (
 
-        <KeyboardAwareScrollView>
-            <ImageBackground source={require('../Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
-                <View style={Styles.container}>
+
+        <ImageBackground source={require('../Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
+            <View style={Styles.container}>
 
 
 
-                    <PaperProvider>
-                        <View style={{ marginLeft: 10, marginTop: 10 }}>
-                            <TouchableOpacity>
-                                <Ionicons name='arrow-back' color={"black"} size={30} />
-                            </TouchableOpacity>
+                <PaperProvider>
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
+                        <TouchableOpacity>
+                            <Ionicons name='arrow-back' color={"black"} size={30} />
+                        </TouchableOpacity>
 
-                        </View>
-                        <View
-                            style={{
-                                paddingTop: 10,
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                paddingLeft: 280,
-                                position: "absolute"
-                            }}>
-                            <Menu
-                                visible={visible}
-                                onDismiss={closeMenu}
-                                anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
-                                <Menu.Item onPress={GoTeaEstateOwnerDetails} title="Tea Estate Owner Details" />
-                                <Menu.Item onPress={() => { }} title="Estate Location" />
-                                <Menu.Item onPress={GoMainMenu} title="Log Out" />
-                                <Menu.Item onPress={() => { }} title="Item 4" />
-                            </Menu>
-                        </View>
+                        <Text style={{ marginTop: 50, fontSize: 20, color: "black", fontWeight: "bold" }}>Hello,</Text>
+                        <Text style={{ marginTop: 2, fontSize: 24, color: "black", fontWeight: "bold" }}>Tea Transporter</Text>
+                    </View>
+                    <View
+                        style={{
+                            paddingTop: 10,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            paddingLeft: 280,
+                            position: "absolute"
+                        }}>
+                        <Menu
+                            visible={visible}
+                            onDismiss={closeMenu}
+                            anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
+                            <Menu.Item onPress={GoTeaEstateOwnerDetails} title="Tea Estate Owner Details" />
+                            <Menu.Item onPress={() => { }} title="Estate Location" />
+                            <Menu.Item onPress={GoMainMenu} title="Log Out" />
+                            <Menu.Item onPress={() => { }} title="Item 4" />
+                        </Menu>
+                    </View>
 
 
-                        <View style={{ marginTop: 100 }}>
-                            <Text style={Styles.txt2}>    Tea Estate ID:</Text>
+                    <View style={{ marginTop: 50 }}>
+                        <Text style={Styles.txt2}>    Tea Estate ID:</Text>
 
-                            <View>
-                                <TouchableOpacity style={Styles.drop} onPress={() => setIsClicked(!isClicked)}>
-                                    <Text style={{ fontSize: 17 }}>    {selectId}</Text>
-                                    {isClicked ? (
-                                        <Image source={require('../Images/up.png')} style={Styles.icon} />
-                                    ) : (
-                                        <Image source={require('../Images/down.png')} style={Styles.icon} />
-                                    )}
-                                </TouchableOpacity>
-
-                                {isClicked && (
-                                    <View style={Styles.dropdownarea}>
-                                        <FlatList
-                                            data={Dataset} // Use Dataset as data source
-                                            renderItem={({ item }) => {
-                                                return (
-                                                    <TouchableOpacity style={Styles.items} onPress={() => { setSelectId(item.Id); setIsClicked(false) }}>
-                                                        <Text style={{ fontSize: 16 }}>{item.Id}</Text>
-                                                    </TouchableOpacity>
-                                                );
-                                            }}
-                                            keyExtractor={(item) => item.Id}
-                                        />
-                                    </View>
+                        <View>
+                            <TouchableOpacity style={Styles.drop} onPress={() => setIsClicked(!isClicked)}>
+                                <Text style={{ fontSize: 17 }}>    {selectId}</Text>
+                                {isClicked ? (
+                                    <Image source={require('../Images/up.png')} style={Styles.icon} />
+                                ) : (
+                                    <Image source={require('../Images/down.png')} style={Styles.icon} />
                                 )}
-                            </View>
-
-
-                            <Text style={Styles.txt2}>    Tea waight:</Text>
-                            <TextInput mode="outlined" label="Tea weight" right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
-
-                            <TouchableOpacity onPress={handleCameraLaunch} style={{ marginTop: 8 }}>
-                                <Text style={Styles.btn1}>Capture Tea weight</Text>
                             </TouchableOpacity>
 
-
-                            <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 8 }}>
-                                <Text style={Styles.btn}>Send</Text>
-                            </TouchableOpacity>
-
+                            {isClicked && (
+                                <View style={Styles.dropdownarea}>
+                                    <FlatList
+                                        data={data} // Use Dataset as data source
+                                        renderItem={({ item }) => {
+                                            return (
+                                                <TouchableOpacity style={Styles.items} onPress={() => { setSelectId(item.TeaEstateId); setIsClicked(false) }}>
+                                                    <Text style={{ fontSize: 16 }}>{item.TeaEstateId}</Text>
+                                                </TouchableOpacity>
+                                            );
+                                        }}
+                                        keyExtractor={(item) => item.TeaEstateId}
+                                    />
+                                </View>
+                            )}
                         </View>
-                    </PaperProvider>
-                </View>
-            </ImageBackground>
-        </KeyboardAwareScrollView>
+
+
+                        <Text style={Styles.txt2}>    Tea waight:</Text>
+                        <TextInput mode="outlined" label="Tea weight" right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
+
+                        <TouchableOpacity onPress={handleCameraLaunch} style={{ marginTop: 8 }}>
+                            <Text style={Styles.btn1}>Capture Tea weight</Text>
+                            <Image source={require('../Images/camera.png')} style={Styles.iconCamera} />
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 8 }}>
+                            <Text style={Styles.btn}>Send</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </PaperProvider>
+            </View>
+        </ImageBackground>
 
     )
 }
@@ -220,7 +228,7 @@ const Styles = StyleSheet.create({
         marginTop: 11,
         backgroundColor: 'rgb(221, 230, 237)',
         width: 220,
-        height: 30,
+        height: 80,
         fontSize: 20,
         color: "rgb(39, 55, 77)",
         alignItems: 'center',
@@ -264,7 +272,14 @@ const Styles = StyleSheet.create({
         borderBottomColor: '#8e8e8e',
         alignSelf: "center",
         justifyContent: "center"
-    }
+    },
+    iconCamera: {
+        width: 38,
+        height: 38,
+        marginTop: 45,
+        marginLeft: 105,
+        position: 'absolute'
+    },
 })
 
 export default HomeT;

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, PermissionsAndroid } from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
@@ -27,6 +27,9 @@ function Login() {
     const [loginSt, setLoginSt] = useState('')
     const [nameError, setNameError] = useState(null);
     const [pwError, setpwError] = useState(null);
+
+    const emailInputRef = useRef(null);
+    const passwordInputRef = useRef(null);
 
     const Permission = async () => {
         try {
@@ -72,18 +75,36 @@ function Login() {
 
 
     const LoginData = () => {
-        Axios.post('http://192.168.1.103:3000/api/sdgp_database/TeaEstateOwner_Validation', {
-            method: 'POST',
-            Email: Email,
-            password: Password,
-        })
-            .then((response) => {
-                if (response.data.message) {
-                    setLoginSt(response.data.message);
-                } else {
-                    { GoHome() }
-                }
+        // Check if both email and password are entered
+        if (Email && Password) {
+            Axios.post('http://192.168.1.101:3000/api/sdgp_database/TeaEstateOwner_Validation', {
+                method: 'POST',
+                Email: Email,
+                password: Password,
             })
+                .then((response) => {
+                    if (response.data.message) {
+                        setLoginSt(response.data.message);
+                        emailInputRef.current.clear();
+                        passwordInputRef.current.clear();
+                    } else {
+                        // If successful login, navigate to home screen
+                        GoHome();
+                    }
+                })
+                .catch(error => {
+                    // Handle error, such as displaying error message
+                    console.error('Error occurred during login:', error);
+                });
+        } else {
+            // If email or password is not entered, display appropriate error messages
+            if (!Email) {
+                setNameError("Email is required.");
+            }
+            if (!Password) {
+                setpwError("Password is required.");
+            }
+        }
     }
 
     const GoHome = () => {
@@ -115,7 +136,7 @@ function Login() {
     }
 
     const merge = () => {
-        validate();
+        //validate();
         LoginData();
 
     };
@@ -154,27 +175,26 @@ function Login() {
                     <View style={{ flex: 3, marginTop: 40 }}>
 
                         <Text style={Styles.txt2}>    Email:</Text>
-                        <TextInput mode="outlined" label="Email:" onChangeText={(data) => { setEmail(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="Email:" onChangeText={(data) => { setEmail(data) }} ref={emailInputRef} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                         {!!nameError && (<Text style={{ color: "red" }}>   {nameError}</Text>)}
 
                         <Text style={Styles.txt2}>    Password:</Text>
-                        <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} ref={passwordInputRef} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+                        {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
 
                         <TouchableOpacity onPress={GoForgotPw}>
-                            <Text style={{ color: "black", marginLeft: 258, fontSize: 15, marginTop: 11, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
+                            <Text style={{ color: "black", marginLeft: 258, fontSize: 15, marginTop: 4, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
                         </TouchableOpacity>
-
-                        {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
 
 
                     </View>
 
-                    <View style={{ flex: 4, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 16 }} onPress={GoHome}>
+                    <View style={{ flex: 3, }}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={LoginData}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 
-                        {txt()}
+                        <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>{loginSt}</Text>
 
                     </View>
 
@@ -219,7 +239,7 @@ const Styles = StyleSheet.create({
         fontSize: 18,
     },
     btn: {
-        marginTop: 45,
+        marginTop: 65,
         backgroundColor: 'rgb(221, 230, 237)',
         width: 280,
         height: 40,
