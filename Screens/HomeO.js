@@ -36,6 +36,13 @@ function HomeO() {
         })
     }
 
+    const GoPastdataPage = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "PastData" }]
+        })
+    }
+
     const GoMainMenu = () => {
         navigation.reset({
             index: 0,
@@ -67,7 +74,7 @@ function HomeO() {
                                 visible={visible}
                                 onDismiss={closeMenu}
                                 anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
-                                <Menu.Item onPress={() => { }} title="Past Tea Data" />
+                                <Menu.Item onPress={GoPastdataPage} title="Past Tea Data" />
                                 <Menu.Item onPress={GoWeatherData} title="Weather Forecast" />
                                 <Menu.Item onPress={() => { }} title="Fertilizer Plan" />
                                 <Menu.Item onPress={GoContactPage} title="Contact Factory" />

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native';
@@ -21,27 +21,47 @@ function LoginT() {
     }
 
 
-    const [Username, setUsername] = useState('')
+    const [Email, setEmail] = useState('')
     const [Password, setPassword] = useState('')
     const [loginSt, setLoginSt] = useState('')
     const [nameError, setNameError] = useState(null);
     const [pwError, setpwError] = useState(null);
 
-    const LoginData = () => {
-        Axios.post('http://localhost:3000/api/sdgp_database/TeaTransporter_Validation', {
-            method: 'POST',
-            username: Username,
-            password: Password,
-        })
-            .then((response) => {
-                if (response.data.message) {
-                    setLoginSt(response.data.message);
-                } else {
-                    { GoHome() }
-                }
-            })
-    }
+    const emailInputRef = useRef(null);
+    const passwordInputRef = useRef(null);
 
+    const LoginData = () => {
+        // Check if both email and password are entered
+        if (Email && Password) {
+            Axios.post('http://192.168.1.105:3000/api/sdgp_database/TeaTransporter_Validation', {
+                method: 'POST',
+                Email: Email,
+                password: Password,
+            })
+                .then((response) => {
+                    if (response.data.message) {
+                        setLoginSt(response.data.message);
+                        emailInputRef.current.clear();
+                        passwordInputRef.current.clear();
+                    } else {
+                        // If successful login, navigate to home screen
+                        GoHome();
+                    }
+                })
+                .catch(error => {
+                    // Handle error, such as displaying error message
+                    console.log('Error occurred during login:', error);
+                });
+        } else {
+            // If email or password is not entered, display appropriate error messages
+            if (!Email) {
+                setNameError("Email is required.");
+            }
+            if (!Password) {
+                setpwError("Password is required.");
+            }
+        }
+    }
     const GoHome = () => {
         navigation.reset({
             index: 0,
@@ -57,7 +77,7 @@ function LoginT() {
     }
 
     const validate = () => {
-        if (Username.trim() === "") {
+        if (Email.trim() === "") {
             setNameError("Username Required.");
         } else if (Password.trim() === "") {
             setNameError(null);
@@ -68,19 +88,10 @@ function LoginT() {
     }
 
     const merge = () => {
-        validate();
+        //validate();
         LoginData();
     };
 
-    const txt = () => {
-        if (loginSt.trim() === "Wrong user name or password") {
-            Alert.alert('Invalid Credentials', 'Please check your username and password.');
-            return <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>  {loginSt}</Text>;
-
-        } else {
-            return <Text style={{ color: "green" }}>{loginSt}</Text>;
-        }
-    }
 
     const [rememberMe, setRememberMe] = useState(false);
     return (
@@ -105,25 +116,27 @@ function LoginT() {
                     </View>
 
                     <View style={{ flex: 3, marginTop: 40 }}>
-                        <Text style={Styles.txt2}>    Username:</Text>
-                        <TextInput mode="outlined" label="Username:" onChangeText={(data) => { setUsername(data) }} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
+                        <Text style={Styles.txt2}>    Email:</Text>
+                        <TextInput mode="outlined" label="Email:" onChangeText={(data) => { setEmail(data) }} ref={emailInputRef} right={<TextInput.Affix text="/15" />} style={Styles.Inputs} required />
                         {!!nameError && (<Text style={{ color: "red" }}>   {nameError}</Text>)}
 
                         <Text style={Styles.txt2}>    Password:</Text>
-                        <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+                        <TextInput mode="outlined" label="Password:" onChangeText={(data) => { setPassword(data) }} ref={passwordInputRef} secureTextEntry right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} required />
+                        {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
 
                         <TouchableOpacity onPress={GoForgotPw}>
-                            <Text style={{ color: "black", marginLeft: 258, fontSize: 15, marginTop: 11, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
+                            <Text style={{ color: "black", marginLeft: 258, fontSize: 15, marginTop: 0, fontWeight: "bold", textDecorationLine: "underline" }}>forgot password? </Text>
                         </TouchableOpacity>
-                        {!!pwError && (<Text style={{ color: "red" }}>   {pwError}</Text>)}
+
 
                     </View>
 
-                    <View style={{ flex: 4, }}>
+                    <View style={{ flex: 3, }}>
                         <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={GoHome}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
-                        {txt()}
+
+                        <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>{loginSt}</Text>
 
                     </View>
 

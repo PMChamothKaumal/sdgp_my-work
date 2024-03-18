@@ -103,7 +103,7 @@ function VerifyPw() {
                 <View style={Styles.container}>
 
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
-                        <TouchableOpacity onPress={GoForgotPw}>
+                        <TouchableOpacity >
                             <Ionicons name='arrow-back' color={"black"} size={30} />
                         </TouchableOpacity>
 

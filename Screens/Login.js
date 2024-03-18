@@ -46,7 +46,6 @@ function Login() {
                 },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('You can use the camera');
                 getCurrentLocation();
             } else {
                 console.log('Location permission denied');
@@ -57,6 +56,7 @@ function Login() {
     };
 
     const [currentLocation, setCurrentLocation] = useState(null);
+
     const getCurrentLocation = () => {
 
         Geolocation.getCurrentPosition(
@@ -69,9 +69,6 @@ function Login() {
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         )
     }
-
-
-
 
 
     const LoginData = () => {
@@ -123,35 +120,6 @@ function Login() {
         })
     }
 
-
-    const validate = () => {
-        if (Email.trim() === "") {
-            setNameError("Username Required.");
-        } else if (Password.trim() === "") {
-            setNameError(null);
-            setpwError("Password Required.");
-        } else {
-            setpwError(null);
-        }
-    }
-
-    const merge = () => {
-        //validate();
-        LoginData();
-
-    };
-
-    const txt = () => {
-        if (loginSt.trim() === "Wrong user name or password") {
-            Alert.alert('Invalid Credentials', 'Please check your username and password.');
-            return <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>  {loginSt}</Text>;
-
-        } else {
-            return <Text style={{ color: "green" }}>{loginSt}</Text>;
-        }
-    }
-
-    const [rememberMe, setRememberMe] = useState(false);
     return (
 
         <KeyboardAwareScrollView>
@@ -190,7 +158,7 @@ function Login() {
                     </View>
 
                     <View style={{ flex: 3, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={LoginData}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={GoHome}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 

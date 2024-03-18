@@ -19,6 +19,7 @@ import TeaEstateOwnerDeatils from './Screens/TeaEstateOwnerDetails';
 import AboutUs from './Screens/AboutUs';
 import Contact from './Screens/Contact';
 import WeatherData from './Screens/WeatherData';
+import PastData from './Screens/PastData';
 
 
 
@@ -87,6 +88,7 @@ const App = () => {
             <Stack.Screen name="TeaStateOwnerDetails" component={TeaEstateOwnerDeatils} options={{ headerShown: false }} />
             <Stack.Screen name="Contact" component={Contact} options={{ headerShown: false }} />
             <Stack.Screen name="WeatherData" component={WeatherData} options={{ headerShown: false }} />
+            <Stack.Screen name="PastData" component={PastData} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

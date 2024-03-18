@@ -72,7 +72,7 @@ function TeaEstateOwnerDeatils() {
 
     const GetDetails = () => {
 
-        fetch('http://10.31.9.153:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('http://192.168.1.105:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;
@@ -158,7 +158,8 @@ function TeaEstateOwnerDeatils() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 10
+        paddingBottom: 100
+
     },
 
     image: {

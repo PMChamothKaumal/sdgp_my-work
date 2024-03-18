@@ -4,9 +4,12 @@ import { TextInput, FAB, Button, Menu, Divider, PaperProvider, Appbar, Modal, MD
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import GetLocation from 'react-native-get-location'
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Axios from "react-native-axios"
+import TextRecognition from '@react-native-ml-kit/text-recognition';
 
 
 
@@ -24,18 +27,90 @@ function HomeT() {
     const [isClicked, setIsClicked] = useState(false);
     const [selectId, setSelectId] = useState('Select ID');
     const [data, setdata] = useState('');
+    const [weight, setWeight] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const [image, setImage] = useState('');
+    const [text, setText] = useState('');
+    const [loading, setLoading] = useState(false);
+
+
+    const openCamera = async () => {
+        try {
+            const result = await launchCamera({ mediaType: "photo" });
+            if (!result.didCancel) {
+                setImage(result.assets[0].uri);
+            }
+        } catch (error) {
+            console.error("Error opening camera:", error);
+            Alert.alert("Error", "Failed to open camera. Please try again.");
+        }
+    };
+
+    const recognizeText = async () => {
+        if (image) {
+            setLoading(true);
+            try {
+                const result = await TextRecognition.recognize(image);
+                if (result && result.text) {
+                    setText(result.text);
+                    for (let block of result.blocks) {
+                        console.log('Block text:', block.text);
+                        console.log('Block frame:', block.frame);
+
+                        for (let line of block.lines) {
+                            console.log('Line text:', line.text);
+                            console.log('Line frame:', line.frame);
+                        }
+                    }
+                } else {
+                    setText('');
+                    Alert.alert("Error", "No text found in the image.");
+                }
+            } catch (error) {
+                //console.error("Error recognizing text:", error);
+                Alert.alert("Error", "Failed to recognize text. Please try again.");
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            setText('');
+            console.log("first")
+        }
+    };
 
     const GetEstateId = () => {
 
-        fetch('http://192.168.1.101:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('http://192.168.1.105:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;
                 setdata(sortedData);
+            });
+    }
 
+    const Dispatch_Weight = async () => {
+        try {
+            const response = await Axios.post('http://192.168.1.105:3000/api/sdgp_database/Dispatch_TeaWeights', {
+                estate_ID: selectId,
+                Dispatch_Weight: weight,
             });
 
-    }
+            if (response.data.message) {
+                // Data insertion successful
+                alert(response.data.message);
+                setSelectId(null);
+                setWeight(null);
+            } else {
+                // Handle other scenarios if needed
+            }
+        } catch (error) {
+            console.log('Error occurred during login:', error);
+            setErrorMessage('Error occurred during insertion.');
+            // Display error message to user
+            alert(errorMessage); // or set a state to display this message in your UI
+        }
+    };
 
 
     const location = () => {
@@ -59,7 +134,7 @@ function HomeT() {
 
 
     const navigation = useNavigation();
-    const [image, setImage] = useState(null);
+    //const [image, setImage] = useState(null);
 
     const GoTeaEstateOwnerDetails = () => {
         navigation.reset({
@@ -102,8 +177,6 @@ function HomeT() {
         <ImageBackground source={require('../Images/backg1.jpg')} resizeMode="cover" style={Styles.image}>
             <View style={Styles.container}>
 
-
-
                 <PaperProvider>
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
                         <TouchableOpacity>
@@ -126,7 +199,6 @@ function HomeT() {
                             onDismiss={closeMenu}
                             anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
                             <Menu.Item onPress={GoTeaEstateOwnerDetails} title="Tea Estate Owner Details" />
-                            <Menu.Item onPress={() => { }} title="Estate Location" />
                             <Menu.Item onPress={GoMainMenu} title="Log Out" />
                             <Menu.Item onPress={() => { }} title="Item 4" />
                         </Menu>
@@ -165,15 +237,15 @@ function HomeT() {
 
 
                         <Text style={Styles.txt2}>    Tea waight:</Text>
-                        <TextInput mode="outlined" label="Tea weight" right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
+                        <TextInput mode="outlined" label="Tea weight" onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
 
-                        <TouchableOpacity onPress={handleCameraLaunch} style={{ marginTop: 8 }}>
+                        <TouchableOpacity onPress={openCamera} style={{ marginTop: 8 }}>
                             <Text style={Styles.btn1}>Capture Tea weight</Text>
                             <Image source={require('../Images/camera.png')} style={Styles.iconCamera} />
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 8 }}>
+                        <TouchableOpacity onPress={Dispatch_Weight} style={{ alignItems: 'center', justifyContent: "center", marginTop: 8 }}>
                             <Text style={Styles.btn}>Send</Text>
                         </TouchableOpacity>
 
