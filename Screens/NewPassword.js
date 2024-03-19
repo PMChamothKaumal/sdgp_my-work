@@ -32,15 +32,23 @@ function NewPassword() {
         })
     }
 
-    const GoVeryfyMail = () => {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "VerifyPw" }]
-        })
-    }
 
     const UpdatePassword = () => {
-        Axios.post('http://192.168.1.103:3000/api/sdgp_database/Update_TeaEstateOwner_Passwords', {
+        // Check if email, newPassword, and conPassword are not empty
+        if (!email || !newPassword || !conPassword) {
+            console.log('newPassword, or conPassword cannot be empty.');
+            setLoginSt('newPassword, or conPassword cannot be empty.')
+            return;
+        }
+
+        // Check if newPassword and conPassword match
+        if (newPassword !== conPassword) {
+            console.log('New password and confirm password do not match.');
+            setLoginSt('New password and confirm password do not match.')
+            return;
+        }
+
+        Axios.post('http://16.16.216.239:3000/api/sdgp_database/Update_TeaEstateOwner_Passwords', {
             method: 'POST',
             Email: email,
             newPassword: newPassword,
@@ -61,6 +69,7 @@ function NewPassword() {
             });
     };
 
+
     return (
 
         <KeyboardAwareScrollView>
@@ -68,7 +77,7 @@ function NewPassword() {
                 <View style={Styles.container}>
 
                     <View style={{ marginLeft: 10, marginTop: 10 }}>
-                        <TouchableOpacity onPress={GoVeryfyMail}>
+                        <TouchableOpacity>
                             <Ionicons name='arrow-back' color={"black"} size={30} />
                         </TouchableOpacity>
 
@@ -81,7 +90,7 @@ function NewPassword() {
                         <Image source={require("../Images/new.png")} style={{ alignItems: "center", width: 400, height: 320 }} />
                     </View>
 
-                    <View style={{ marginTop: 0 }}>
+                    <View style={{ marginTop: -10 }}>
                         <Text style={Styles.txt}>Your New Pasword Must Be Different </Text>
                         <Text style={Styles.txt}>From Previously Used Password</Text>
                     </View>
@@ -97,6 +106,10 @@ function NewPassword() {
                     <TouchableOpacity onPress={UpdatePassword} style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }}>
                         <Text style={Styles.btn}>Save</Text>
                     </TouchableOpacity>
+
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={{ fontSize: 16, color: "red" }}>{loginSt}</Text>
+                    </View>
 
 
                 </View>

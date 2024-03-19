@@ -74,7 +74,7 @@ function Login() {
     const LoginData = () => {
         // Check if both email and password are entered
         if (Email && Password) {
-            Axios.post('http://192.168.1.101:3000/api/sdgp_database/TeaEstateOwner_Validation', {
+            Axios.post('http://16.16.216.239:3000/api/sdgp_database/TeaEstateOwner_Validation', {
                 method: 'POST',
                 Email: Email,
                 password: Password,
@@ -158,7 +158,7 @@ function Login() {
                     </View>
 
                     <View style={{ flex: 3, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={GoHome}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={LoginData}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 

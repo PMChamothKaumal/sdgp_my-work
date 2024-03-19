@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react';
 import { TextInput, Checkbox, Appbar } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -34,17 +34,21 @@ function ForgotPw() {
 
     const [Email, setEmail] = useState('');
     const [loginStatus, setLoginStatus] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const [responseMessage, setResponseMessage] = useState('');
 
     const checkEmail = async () => {
         try {
+            // Set loading state to true
+            setLoading(true);
+
             const requestBody = {
                 Email: Email,
                 sub: Subject
             };
 
-            const response = await fetch('http://192.168.1.105:3000/api/sdgp_database/Check_email_validations', {
+            const response = await fetch('http://16.16.216.239:3000/api/sdgp_database/Check_email_validations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -68,8 +72,12 @@ function ForgotPw() {
         } catch (error) {
             console.error('Error:', error);
             setResponseMessage('Error occurred while checking emails');
+        } finally {
+            // Set loading state to false when the request is completed
+            setLoading(false);
         }
     };
+
 
 
     return (
@@ -104,6 +112,8 @@ function ForgotPw() {
                     <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={checkEmail}>
                         <Text style={Styles.btn}>Send</Text>
                     </TouchableOpacity>
+
+                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
                     <Text style={{ color: "red", marginTop: 12, fontWeight: "bold", fontSize: 16 }}>    {loginStatus}</Text>
 

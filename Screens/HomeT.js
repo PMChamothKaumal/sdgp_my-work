@@ -81,7 +81,7 @@ function HomeT() {
 
     const GetEstateId = () => {
 
-        fetch('http://192.168.1.105:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('http://16.16.216.239:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;
@@ -91,7 +91,7 @@ function HomeT() {
 
     const Dispatch_Weight = async () => {
         try {
-            const response = await Axios.post('http://192.168.1.105:3000/api/sdgp_database/Dispatch_TeaWeights', {
+            const response = await Axios.post('http://16.16.216.239:3000/api/sdgp_database/Dispatch_TeaWeights', {
                 estate_ID: selectId,
                 Dispatch_Weight: weight,
             });
