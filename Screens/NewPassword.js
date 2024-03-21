@@ -48,7 +48,7 @@ function NewPassword() {
             return;
         }
 
-        Axios.post('http://16.16.216.239:3000/api/sdgp_database/Update_TeaEstateOwner_Passwords', {
+        Axios.post('https://ts.teasage.social/api/sdgp_database/Update_TeaEstateOwner_Passwords', {
             method: 'POST',
             Email: email,
             newPassword: newPassword,
@@ -80,7 +80,6 @@ function NewPassword() {
                         <TouchableOpacity>
                             <Ionicons name='arrow-back' color={"black"} size={30} />
                         </TouchableOpacity>
-
                     </View>
 
 

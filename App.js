@@ -89,6 +89,8 @@ const App = () => {
             <Stack.Screen name="Contact" component={Contact} options={{ headerShown: false }} />
             <Stack.Screen name="WeatherData" component={WeatherData} options={{ headerShown: false }} />
             <Stack.Screen name="PastData" component={PastData} options={{ headerShown: false }} />
+            <Stack.Screen name="AboutUs" component={AboutUs} options={{ headerShown: false }} />
+
           </Stack.Navigator>
         </NavigationContainer>
       )}

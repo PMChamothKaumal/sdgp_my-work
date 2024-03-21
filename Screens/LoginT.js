@@ -33,7 +33,7 @@ function LoginT() {
     const LoginData = () => {
         // Check if both email and password are entered
         if (Email && Password) {
-            Axios.post('http://16.16.216.239:3000/api/sdgp_database/TeaTransporter_Validation', {
+            Axios.post('https://ts.teasage.social/api/sdgp_database/TeaTransporter_Validation', {
                 method: 'POST',
                 Email: Email,
                 password: Password,
@@ -132,7 +132,7 @@ function LoginT() {
                     </View>
 
                     <View style={{ flex: 3, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={GoHome}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={LoginData}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 

@@ -48,7 +48,7 @@ function ForgotPw() {
                 sub: Subject
             };
 
-            const response = await fetch('http://16.16.216.239:3000/api/sdgp_database/Check_email_validations', {
+            const response = await fetch('https://ts.teasage.social/api/sdgp_database/Check_email_validations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

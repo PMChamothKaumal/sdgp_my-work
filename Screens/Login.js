@@ -74,7 +74,7 @@ function Login() {
     const LoginData = () => {
         // Check if both email and password are entered
         if (Email && Password) {
-            Axios.post('http://16.16.216.239:3000/api/sdgp_database/TeaEstateOwner_Validation', {
+            Axios.post('https://ts.teasage.social/api/sdgp_database/TeaEstateOwner_Validation', {
                 method: 'POST',
                 Email: Email,
                 password: Password,

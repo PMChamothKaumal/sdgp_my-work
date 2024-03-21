@@ -36,6 +36,13 @@ function HomeO() {
         })
     }
 
+    const GoAboutUs = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "AboutUs" }]
+        })
+    }
+
     const GoPastdataPage = () => {
         navigation.reset({
             index: 0,
@@ -79,6 +86,7 @@ function HomeO() {
                                 <Menu.Item onPress={() => { }} title="Fertilizer Plan" />
                                 <Menu.Item onPress={GoContactPage} title="Contact Factory" />
                                 <Menu.Item onPress={GoMainMenu} title="Log Out" />
+                                <Menu.Item onPress={GoAboutUs} title="About Us" />
                             </Menu>
                         </View>
 

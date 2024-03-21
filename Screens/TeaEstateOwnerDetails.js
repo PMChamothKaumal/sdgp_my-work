@@ -29,27 +29,7 @@ function TeaEstateOwnerDeatils() {
         <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
 
             <Text style={styles.text}> Tea Estate Id: <Text>{item.TeaEstateId}</Text></Text>
-            <Text style={styles.text}>State Owner Name: {item.Username}</Text>
-
-
-            {item.Latitude !== null && item.Longitude !== null ? (
-                <MapView
-                    style={{ width: 342, height: 160, marginTop: 15 }}
-                    initialRegion={{
-                        latitude: parseFloat(item.Latitude),
-                        longitude: parseFloat(item.Longitude),
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                >
-                    <Marker
-                        coordinate={{ latitude: parseFloat(item.Latitude), longitude: parseFloat(item.Longitude) }}
-                        title='Marker'
-                    />
-                </MapView>
-            ) : (
-                <Text>Location Not Found</Text>
-            )}
+            <Text style={styles.text}>State Owner Name: {item.FirstName}</Text>
 
 
         </TouchableOpacity>
@@ -72,7 +52,7 @@ function TeaEstateOwnerDeatils() {
 
     const GetDetails = () => {
 
-        fetch('http://16.16.216.239:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('https://ts.teasage.social/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;

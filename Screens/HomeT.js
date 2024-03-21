@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, FlatList } from 'react-native'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TextInput, FAB, Button, Menu, Divider, PaperProvider, Appbar, Modal, MD3Colors, Portal, Card, IconButton } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -34,6 +34,21 @@ function HomeT() {
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const weightInputRef = useRef(null);
+
+
+    const pickImage = async () => {
+        try {
+            const result = await launchImageLibrary({ mediaType: "photo" });
+            if (!result.didCancel) {
+                setImage(result.assets[0].uri);
+            }
+        } catch (error) {
+            console.error("Error picking image:", error);
+            Alert.alert("Error", "Failed to pick image. Please try again.");
+        }
+    };
+
 
     const openCamera = async () => {
         try {
@@ -56,11 +71,9 @@ function HomeT() {
                     setText(result.text);
                     for (let block of result.blocks) {
                         console.log('Block text:', block.text);
-                        console.log('Block frame:', block.frame);
 
                         for (let line of block.lines) {
                             console.log('Line text:', line.text);
-                            console.log('Line frame:', line.frame);
                         }
                     }
                 } else {
@@ -81,7 +94,7 @@ function HomeT() {
 
     const GetEstateId = () => {
 
-        fetch('http://16.16.216.239:3000/api/sdgp_database/Get_TeaEstateOwner_Details')
+        fetch('https://ts.teasage.social/api/sdgp_database/Get_TeaEstateOwner_Details')
             .then((response) => response.json())
             .then((responseJson) => {
                 const sortedData = responseJson;
@@ -91,7 +104,7 @@ function HomeT() {
 
     const Dispatch_Weight = async () => {
         try {
-            const response = await Axios.post('http://16.16.216.239:3000/api/sdgp_database/Dispatch_TeaWeights', {
+            const response = await Axios.post('https://ts.teasage.social/api/sdgp_database/Dispatch_TeaWeights', {
                 estate_ID: selectId,
                 Dispatch_Weight: weight,
             });
@@ -100,32 +113,24 @@ function HomeT() {
                 // Data insertion successful
                 alert(response.data.message);
                 setSelectId(null);
-                setWeight(null);
+                weightInputRef.current.clear();
             } else {
                 // Handle other scenarios if needed
             }
         } catch (error) {
             console.log('Error occurred during login:', error);
-            setErrorMessage('Error occurred during insertion.');
+            setErrorMessage('This Estate Id already have Tea weight');
+            setSelectId(null);
+            weightInputRef.current.clear();
             // Display error message to user
             alert(errorMessage); // or set a state to display this message in your UI
         }
     };
 
 
-    const location = () => {
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 60000,
-        })
-            .then(location => {
-                console.log(location);
-            })
-            .catch(error => {
-                const { code, message } = error;
-                console.warn(code, message);
-            })
-    }
+    useEffect(() => {
+        recognizeText();
+    }, [image]);
 
     useEffect(() => {
         GetEstateId();
@@ -150,26 +155,6 @@ function HomeT() {
         })
     }
 
-    const handleCameraLaunch = () => {
-        const options = {
-            mediaType: 'photo',
-            includeBase64: false,
-            maxHeight: 2000,
-            maxWidth: 2000,
-        };
-
-        launchCamera(options, response => {
-            if (response.didCancel) {
-                console.log('User cancelled camera');
-            } else if (response.error) {
-                console.log('Camera Error: ', response.error);
-            } else {
-                let imageUri = response.uri || response.assets?.[0]?.uri;
-                //setSelectedImage(imageUri);
-                console.log("ImageURI:" + imageUri);
-            }
-        });
-    }
 
     return (
 
@@ -200,7 +185,7 @@ function HomeT() {
                             anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
                             <Menu.Item onPress={GoTeaEstateOwnerDetails} title="Tea Estate Owner Details" />
                             <Menu.Item onPress={GoMainMenu} title="Log Out" />
-                            <Menu.Item onPress={() => { }} title="Item 4" />
+
                         </Menu>
                     </View>
 
@@ -237,9 +222,9 @@ function HomeT() {
 
 
                         <Text style={Styles.txt2}>    Tea waight:</Text>
-                        <TextInput mode="outlined" label="Tea weight" onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
+                        <TextInput mode="outlined" label="Tea weight" ref={weightInputRef} onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
 
-                        <TouchableOpacity onPress={openCamera} style={{ marginTop: 8 }}>
+                        <TouchableOpacity onPress={pickImage} style={{ marginTop: 8 }}>
                             <Text style={Styles.btn1}>Capture Tea weight</Text>
                             <Image source={require('../Images/camera.png')} style={Styles.iconCamera} />
                         </TouchableOpacity>
