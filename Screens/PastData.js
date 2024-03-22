@@ -4,7 +4,7 @@ import { FAB, Button, Menu, Divider, PaperProvider, Appbar, Modal, Portal, Card 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 
 const screenHeight = Dimensions.get('window').height;
@@ -15,10 +15,13 @@ function PastData() {
 
     const navigation = useNavigation();
 
+    const route = useRoute();
+    const { Email } = route.params;
+
     const GoHomePage = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeO" }]
+            routes: [{ name: "HomeO", params: { Email: Email } }]
         })
     }
 
@@ -33,11 +36,12 @@ function PastData() {
                                 <Ionicons name='arrow-back' color={"black"} size={30} />
                             </TouchableOpacity>
 
+                            <Text style={{ fontSize: 20, marginLeft: 120, marginTop: 12, color: "black", fontWeight: "bold" }}>Past Tea Records</Text>
                         </View>
 
-                        <Card style={{ marginTop: 30, width: 390, height: 580, backgroundColor: 'transparent' }}>
+                        <Card style={{ marginTop: 20, width: 390, height: 580, backgroundColor: 'transparent' }}>
                             <Card.Content>
-                                <Text style={{ fontSize: 18, marginLeft: 10, marginTop: 10 }}>Week Analyze Report</Text>
+
 
                             </Card.Content>
                         </Card>

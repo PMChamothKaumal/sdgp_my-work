@@ -4,7 +4,7 @@ import { FAB, Button, Menu, Divider, PaperProvider, Card, TextInput } from 'reac
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import DateTime from '../Components/DateTime';
 import WeatherScroll from '../Components/WeatherScroll';
 import Geolocation from '@react-native-community/geolocation';
@@ -17,13 +17,18 @@ const API_KEY = '49cc8c821cd2aff9af04c9f98c36eb74';
 
 function WeatherData() {
 
+    const route = useRoute();
+    const { Email } = route.params;
+
     const navigation = useNavigation();
     const GoHome = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeO" }]
+            routes: [{ name: "HomeO", params: { Email: Email } }]
         })
     }
+
+
 
     const [data, setData] = useState({});
 

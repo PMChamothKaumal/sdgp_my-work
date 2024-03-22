@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, PermissionsAndroid } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, PermissionsAndroid, ActivityIndicator } from 'react-native'
 import React, { useState, useRef } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -27,6 +27,8 @@ function Login() {
     const [loginSt, setLoginSt] = useState('')
     const [nameError, setNameError] = useState(null);
     const [pwError, setpwError] = useState(null);
+    const [loading, setLoading] = useState(false);
+
 
     const emailInputRef = useRef(null);
     const passwordInputRef = useRef(null);
@@ -73,6 +75,8 @@ function Login() {
 
     const LoginData = () => {
         // Check if both email and password are entered
+        setLoading(true);
+
         if (Email && Password) {
             Axios.post('https://ts.teasage.social/api/sdgp_database/TeaEstateOwner_Validation', {
                 method: 'POST',
@@ -92,6 +96,9 @@ function Login() {
                 .catch(error => {
                     // Handle error, such as displaying error message
                     console.error('Error occurred during login:', error);
+                })
+                .finally(() => {
+                    setLoading(false);
                 });
         } else {
             // If email or password is not entered, display appropriate error messages
@@ -101,15 +108,17 @@ function Login() {
             if (!Password) {
                 setpwError("Password is required.");
             }
+            setLoading(false); // Ensure loading state is set to false in case of validation error
         }
     }
+
 
     const GoHome = () => {
         Permission();
 
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeO" }]
+            routes: [{ name: "HomeO", params: { Email: Email } }]
         })
     }
 
@@ -161,6 +170,8 @@ function Login() {
                         <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 12 }} onPress={LoginData}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
+
+                        {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
                         <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>{loginSt}</Text>
 

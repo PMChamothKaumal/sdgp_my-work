@@ -29,12 +29,19 @@ function HomeT() {
     const [data, setdata] = useState('');
     const [weight, setWeight] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [Notification, setNotification] = useState('');
 
     const [image, setImage] = useState('');
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
 
     const weightInputRef = useRef(null);
+
+    const [visibleM, setVisibleM] = React.useState(false);
+
+    const showModal = () => setVisibleM(true);
+    const hideModal = () => setVisibleM(false);
+    const containerStyle = { backgroundColor: 'white', padding: 20, height: 580, margin: 20 };
 
 
     const pickImage = async () => {
@@ -69,13 +76,7 @@ function HomeT() {
                 const result = await TextRecognition.recognize(image);
                 if (result && result.text) {
                     setText(result.text);
-                    for (let block of result.blocks) {
-                        console.log('Block text:', block.text);
-
-                        for (let line of block.lines) {
-                            console.log('Line text:', line.text);
-                        }
-                    }
+                    console.log(result.text)
                 } else {
                     setText('');
                     Alert.alert("Error", "No text found in the image.");
@@ -92,6 +93,28 @@ function HomeT() {
         }
     };
 
+    const GetNotifications = () => {
+        fetch('http://192.168.1.104:3000/api/sdgp_database/Get_Notifications')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Sort the data by date
+                const sortedData = responseJson.sort((a, b) => {
+                    // Convert date strings to Date objects for comparison
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    // Compare the dates
+                    return dateA - dateB;
+                });
+                // Update the state with the sorted data
+                setNotification(sortedData);
+                console.log(sortedData);
+            })
+            .catch((error) => {
+                console.error('Error fetching notifications:', error);
+            });
+    };
+
+
     const GetEstateId = () => {
 
         fetch('https://ts.teasage.social/api/sdgp_database/Get_TeaEstateOwner_Details')
@@ -104,28 +127,42 @@ function HomeT() {
 
     const Dispatch_Weight = async () => {
         try {
-            const response = await Axios.post('https://ts.teasage.social/api/sdgp_database/Dispatch_TeaWeights', {
+            if (!selectId || !weight) {
+                alert('Please fill records');
+                return;
+            }
+
+            const response = await Axios.post('http://192.168.1.104:3000/api/sdgp_database/Dispatch_TeaWeights', {
                 estate_ID: selectId,
                 Dispatch_Weight: weight,
             });
 
-            if (response.data.message) {
+            if (response.status === 200) {
                 // Data insertion successful
                 alert(response.data.message);
                 setSelectId(null);
                 weightInputRef.current.clear();
+            } else if (response.status === 400) {
+                // Data already exists for the provided Tea Estate ID on the current date
+                alert(response.data.message);
+                setSelectId(null);
+                weightInputRef.current.clear();
             } else {
-                // Handle other scenarios if needed
+                // Other errors
+                alert('An error occurred while processing your request.');
+                setSelectId(null);
+                weightInputRef.current.clear();
             }
         } catch (error) {
-            console.log('Error occurred during login:', error);
-            setErrorMessage('This Estate Id already have Tea weight');
+            console.log('Error occurred during data dispatch:', error);
+            alert('Data already stored for the provided Tea Estate ID on the current date.');
             setSelectId(null);
             weightInputRef.current.clear();
-            // Display error message to user
-            alert(errorMessage); // or set a state to display this message in your UI
+            // Display error message to user or set a state to display this message in your UI
         }
     };
+
+
 
 
     useEffect(() => {
@@ -134,8 +171,12 @@ function HomeT() {
 
     useEffect(() => {
         GetEstateId();
-
     }, []);
+
+    useEffect(() => {
+        GetNotifications();
+    }, []);
+
 
 
     const navigation = useNavigation();
@@ -168,7 +209,28 @@ function HomeT() {
                             <Ionicons name='arrow-back' color={"black"} size={30} />
                         </TouchableOpacity>
 
-                        <Text style={{ marginTop: 50, fontSize: 20, color: "black", fontWeight: "bold" }}>Hello,</Text>
+                        <Portal>
+                            <Modal visible={visibleM} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                                <Text style={{ fontWeight: "bold", color: "black", fontSize: 16, textAlign: "center", marginBottom: "20" }}>Notification Panel</Text>
+                                <FlatList
+                                    data={Notification} // Use Dataset as data source
+                                    renderItem={({ item }) => (
+                                        <View style={{ width: 310, height: 100, backgroundColor: "rgb(168, 205, 159)", borderRadius: 10, marginTop: 15 }}>
+                                            <Text style={{ fontSize: 16, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>{item.tea_state_id}</Text>
+                                            <Text style={{ fontSize: 14, color: "black", marginTop: 4, marginLeft: 15 }}>Tea weight dispatched Today; kindly arrange transportation accordingly.</Text>
+                                            <Text style={{ fontSize: 14, color: "black", marginTop: 4, marginLeft: 15 }}>                                                         {item.Date_Column.split('T')[0]}</Text>
+                                        </View>
+                                    )}
+                                    keyExtractor={(item) => item.tea_state_id}
+                                />
+                            </Modal>
+                        </Portal>
+                        <Button style={{ marginTop: 10 }} onPress={showModal}>
+                            <Text style={{ fontSize: 16 }}>Show Notification Panel</Text>
+                        </Button>
+
+
+                        <Text style={{ marginTop: 30, fontSize: 20, color: "black", fontWeight: "bold" }}>Hello,</Text>
                         <Text style={{ marginTop: 2, fontSize: 24, color: "black", fontWeight: "bold" }}>Tea Transporter</Text>
                     </View>
                     <View
@@ -195,7 +257,7 @@ function HomeT() {
 
                         <View>
                             <TouchableOpacity style={Styles.drop} onPress={() => setIsClicked(!isClicked)}>
-                                <Text style={{ fontSize: 17 }}>    {selectId}</Text>
+                                <Text style={{ fontSize: 17, color: "black", fontWeight: "bold" }}>    {selectId}</Text>
                                 {isClicked ? (
                                     <Image source={require('../Images/up.png')} style={Styles.icon} />
                                 ) : (
@@ -210,7 +272,7 @@ function HomeT() {
                                         renderItem={({ item }) => {
                                             return (
                                                 <TouchableOpacity style={Styles.items} onPress={() => { setSelectId(item.TeaEstateId); setIsClicked(false) }}>
-                                                    <Text style={{ fontSize: 16 }}>{item.TeaEstateId}</Text>
+                                                    <Text style={{ fontSize: 16, color: "black", fontWeight: "bold" }}>{item.TeaEstateId} - {item.FirstName}</Text>
                                                 </TouchableOpacity>
                                             );
                                         }}
@@ -222,9 +284,9 @@ function HomeT() {
 
 
                         <Text style={Styles.txt2}>    Tea waight:</Text>
-                        <TextInput mode="outlined" label="Tea weight" ref={weightInputRef} onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
+                        <TextInput mode="outlined" value={text} label="Tea weight" ref={weightInputRef} onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
 
-                        <TouchableOpacity onPress={pickImage} style={{ marginTop: 8 }}>
+                        <TouchableOpacity onPress={openCamera} style={{ marginTop: 8 }}>
                             <Text style={Styles.btn1}>Capture Tea weight</Text>
                             <Image source={require('../Images/camera.png')} style={Styles.iconCamera} />
                         </TouchableOpacity>

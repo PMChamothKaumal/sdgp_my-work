@@ -11,11 +11,13 @@ const screenWidth = Dimensions.get('window').width;
 const AboutUs = () => {
 
     const navigation = useNavigation();
+    const route = useRoute();
+    const { Email } = route.params;
 
     const GoHome = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeO" }]
+            routes: [{ name: "HomeO", params: { Email: Email } }]
         })
     }
 
@@ -70,8 +72,8 @@ const AboutUs = () => {
                             titleStyle={{ marginBottom: 16 }}
                             subtitle={
                                 <View>
-                                    <Text style={{ fontSize: 16 }}>pmchamoth@gmail.com</Text>
-                                    <Text>077-1482649</Text>
+                                    <Text style={{ fontSize: 16 }}>kmethnula@gmail.com</Text>
+                                    <Text>076-7786280</Text>
                                 </View>
                             }
                             left={(props) => <Avatar.Icon {...props} icon="folder" />}
@@ -86,8 +88,8 @@ const AboutUs = () => {
                             titleStyle={{ marginBottom: 16 }}
                             subtitle={
                                 <View>
-                                    <Text style={{ fontSize: 16 }}>pmchamoth@gmail.com</Text>
-                                    <Text>077-1482649</Text>
+                                    <Text style={{ fontSize: 16 }}>indurangatheshan@gmail.com</Text>
+                                    <Text>071-8540100</Text>
                                 </View>
                             }
                             left={(props) => <Avatar.Icon {...props} icon="folder" />}
@@ -101,8 +103,8 @@ const AboutUs = () => {
                             titleStyle={{ marginBottom: 16 }}
                             subtitle={
                                 <View>
-                                    <Text style={{ fontSize: 16 }}>pmchamoth@gmail.com</Text>
-                                    <Text>077-1482649</Text>
+                                    <Text style={{ fontSize: 16 }}>chathnuka@gmail.com</Text>
+                                    <Text>077-9399500</Text>
                                 </View>
                             }
                             left={(props) => <Avatar.Icon {...props} icon="folder" />}
@@ -116,8 +118,8 @@ const AboutUs = () => {
                             titleStyle={{ marginBottom: 16 }}
                             subtitle={
                                 <View>
-                                    <Text style={{ fontSize: 16 }}>pmchamoth@gmail.com</Text>
-                                    <Text>077-1482649</Text>
+                                    <Text style={{ fontSize: 16 }}>anuamajayarathna114@gmail.com</Text>
+                                    <Text>076-8783948</Text>
                                 </View>
                             }
                             left={(props) => <Avatar.Icon {...props} icon="folder" />}

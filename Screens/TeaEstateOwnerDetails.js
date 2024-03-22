@@ -59,14 +59,13 @@ function TeaEstateOwnerDeatils() {
                 setData(sortedData);
                 setmasterData(sortedData);
             });
-
     }
 
 
     const searchFilter = (text) => {
         if (text) {
             const newData = masterData.filter((item) => {
-                const itemData = item.Username ? item.Username.toLowerCase()
+                const itemData = item.FirstName ? item.FirstName.toLowerCase()
                     : ''.toLowerCase();
                 const textData = text.toLowerCase();
                 return itemData.indexOf(textData) > -1;

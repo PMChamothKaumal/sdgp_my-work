@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Alert, Image, ActivityIndicator } from 'react-native'
 import React, { useState, useRef } from 'react';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -26,13 +26,17 @@ function LoginT() {
     const [loginSt, setLoginSt] = useState('')
     const [nameError, setNameError] = useState(null);
     const [pwError, setpwError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const emailInputRef = useRef(null);
     const passwordInputRef = useRef(null);
 
     const LoginData = () => {
         // Check if both email and password are entered
+        setLoading(true);
+
         if (Email && Password) {
+            // Check if online
             Axios.post('https://ts.teasage.social/api/sdgp_database/TeaTransporter_Validation', {
                 method: 'POST',
                 Email: Email,
@@ -51,7 +55,13 @@ function LoginT() {
                 .catch(error => {
                     // Handle error, such as displaying error message
                     console.log('Error occurred during login:', error);
+                    console.log('Please check your internet connection.');
+                    // Optionally, you can set an error state here for displaying to the user.
+                })
+                .finally(() => {
+                    setLoading(false);
                 });
+
         } else {
             // If email or password is not entered, display appropriate error messages
             if (!Email) {
@@ -60,8 +70,12 @@ function LoginT() {
             if (!Password) {
                 setpwError("Password is required.");
             }
+            setLoading(false);
         }
     }
+
+
+
     const GoHome = () => {
         navigation.reset({
             index: 0,
@@ -87,10 +101,6 @@ function LoginT() {
         }
     }
 
-    const merge = () => {
-        //validate();
-        LoginData();
-    };
 
 
     const [rememberMe, setRememberMe] = useState(false);
@@ -132,10 +142,11 @@ function LoginT() {
                     </View>
 
                     <View style={{ flex: 3, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={LoginData}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={GoHome}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 
+                        {loading && <ActivityIndicator size="large" color="#0000ff" />}
                         <Text style={{ color: "red", fontSize: 18, marginTop: 10, fontWeight: "bold" }}>{loginSt}</Text>
 
                     </View>
