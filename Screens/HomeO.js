@@ -190,6 +190,7 @@ function HomeO() {
                     <Card style={{ marginTop: 30, width: 365, height: 420, backgroundColor: 'rgb(168, 205, 159)', marginLeft: 15, marginRight: 15 }}>
                         <Card.Content>
                             <Text style={{ fontSize: 22, marginLeft: 65, marginTop: 2, color: "black", fontWeight: "bold" }}>Week Analyze Report</Text>
+                            {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
                             {!weelyReport ? (
                                 <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Can't Find Any Tea Records!</Text>

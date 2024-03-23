@@ -97,22 +97,23 @@ function HomeT() {
         fetch('http://192.168.1.104:3000/api/sdgp_database/Get_Notifications')
             .then((response) => response.json())
             .then((responseJson) => {
-                // Sort the data by date
+                // Sort the data by date in ascending order
                 const sortedData = responseJson.sort((a, b) => {
                     // Convert date strings to Date objects for comparison
                     const dateA = new Date(a.date);
                     const dateB = new Date(b.date);
-                    // Compare the dates
-                    return dateA - dateB;
+                    // Compare the dates in ascending order
+                    return dateB - dateA;
                 });
                 // Update the state with the sorted data
                 setNotification(sortedData);
-                console.log(sortedData);
             })
             .catch((error) => {
                 console.error('Error fetching notifications:', error);
             });
     };
+
+
 
 
     const GetEstateId = () => {
@@ -214,14 +215,14 @@ function HomeT() {
                                 <Text style={{ fontWeight: "bold", color: "black", fontSize: 16, textAlign: "center", marginBottom: "20" }}>Notification Panel</Text>
                                 <FlatList
                                     data={Notification} // Use Dataset as data source
-                                    renderItem={({ item }) => (
+                                    renderItem={({ item, index }) => (
                                         <View style={{ width: 310, height: 100, backgroundColor: "rgb(168, 205, 159)", borderRadius: 10, marginTop: 15 }}>
                                             <Text style={{ fontSize: 16, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>{item.tea_state_id}</Text>
                                             <Text style={{ fontSize: 14, color: "black", marginTop: 4, marginLeft: 15 }}>Tea weight dispatched Today; kindly arrange transportation accordingly.</Text>
                                             <Text style={{ fontSize: 14, color: "black", marginTop: 4, marginLeft: 15 }}>                                                         {item.Date_Column.split('T')[0]}</Text>
                                         </View>
                                     )}
-                                    keyExtractor={(item) => item.tea_state_id}
+
                                 />
                             </Modal>
                         </Portal>
