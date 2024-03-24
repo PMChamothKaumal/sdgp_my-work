@@ -142,7 +142,7 @@ function LoginT() {
                     </View>
 
                     <View style={{ flex: 3, }}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={GoHome}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", marginTop: 15 }} onPress={LoginData}>
                             <Text style={Styles.btn}>Login</Text>
                         </TouchableOpacity>
 

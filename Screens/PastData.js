@@ -140,7 +140,7 @@ function PastData() {
                                         }}
                                     />
                                 ) : (
-                                    <Text style={{ color: "black", fontSize: 16, marginTop: 20 }}>No income data available</Text>
+                                    <Text style={{ color: "black", fontSize: 16, marginTop: 20 }}>No Any Tea Records available In yout Account</Text>
                                 )}
                             </View>
 
@@ -185,7 +185,7 @@ function PastData() {
                                         }}
                                     />
                                 ) : (
-                                    <Text style={{ color: "black", fontSize: 16, marginTop: 20 }}>No Dispatch data available</Text>
+                                    <Text></Text>
                                 )}
                             </View>
 
@@ -231,7 +231,7 @@ function PastData() {
                                         }}
                                     />
                                 ) : (
-                                    <Text style={{ color: "black", fontSize: 16, marginTop: 20 }}>No Deduct data available</Text>
+                                    <Text></Text>
                                 )}
                             </View>
 

@@ -200,11 +200,11 @@ function HomeO() {
                                     renderItem={({ item }) => (
                                         <View style={{ width: 310, height: 340, backgroundColor: "transparent", borderRadius: 10, marginTop: 15 }}>
                                             <Text style={{ fontSize: 20, color: "black", fontWeight: "bold", marginTop: -10, marginLeft: 115 }}>{item.ToDate.split('T')[0]}</Text>
-                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 40, marginLeft: 15 }}>Dispatch Weight:-  {item.Dispatch_Weight}</Text>
-                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Gross Weight:-  {item.gross_Weight}</Text>
-                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Deduct Weight:-  {item.deduct_Weight}</Text>
-                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Net Weight:-  {item.net_Weight}</Text>
-                                            <Text style={{ fontSize: 21, color: "black", fontWeight: "bold", marginTop: 20, marginLeft: 15 }}>Total Income:-  {item.income}</Text>
+                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 40, marginLeft: 15 }}>Dispatch Weight   :-  {item.Dispatch_Weight}.0 Kg</Text>
+                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Gross Weight         :-  {item.gross_Weight}.0 Kg</Text>
+                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Deduct Weight       :-  {item.deduct_Weight}.0 Kg</Text>
+                                            <Text style={{ fontSize: 18, color: "black", fontWeight: "bold", marginTop: 10, marginLeft: 15 }}>Net Weight              :-  {item.net_Weight}.0 Kg</Text>
+                                            <Text style={{ fontSize: 20, color: "black", fontWeight: "bold", marginTop: 20, marginLeft: 15 }}>Total Income  :-   LKR: {item.income}.00</Text>
                                         </View>
                                     )}
                                     keyExtractor={(item) => item.eatate_ID}
