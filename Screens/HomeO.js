@@ -162,7 +162,6 @@ function HomeO() {
                             anchor={<Button style={{ marginLeft: 50, marginTop: 0 }} onPress={openMenu}><Entypo name='dots-three-vertical' color={"black"} size={30} /></Button>}>
                             <Menu.Item onPress={GoPastdataPage} title="Past Tea Data" />
                             <Menu.Item onPress={GoWeatherData} title="Weather Forecast" />
-                            <Menu.Item onPress={() => { }} title="Fertilizer Plan" />
                             <Menu.Item onPress={GoContactPage} title="Contact Factory" />
                             <Menu.Item onPress={GoMainMenu} title="Log Out" />
                             <Menu.Item onPress={GoAboutUs} title="About Us" />

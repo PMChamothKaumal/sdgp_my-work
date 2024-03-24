@@ -13,7 +13,7 @@ import Geolocation from '@react-native-community/geolocation';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const API_KEY = '49cc8c821cd2aff9af04c9f98c36eb74';
+const API_KEY = '37f1b19aefb8e746792424bb7eb037c3';
 
 function WeatherData() {
 
@@ -64,7 +64,7 @@ function WeatherData() {
 
     const fetchDataFromApi = (latitude, longitude) => {
         if (latitude && longitude) {
-            fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=metric&appid=${API_KEY}`).then(res => res.json()).then(data => {
+            fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=metric&appid=${API_KEY}`).then(res => res.json()).then(data => {
 
                 setData(data)
             })

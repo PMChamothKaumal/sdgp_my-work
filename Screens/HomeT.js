@@ -285,7 +285,7 @@ function HomeT() {
 
 
                         <Text style={Styles.txt2}>    Tea waight:</Text>
-                        <TextInput mode="outlined" value={text} label="Tea weight" ref={weightInputRef} onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
+                        <TextInput mode="outlined" label="Tea weight" ref={weightInputRef} onChangeText={(data) => { setWeight(data) }} right={<TextInput.Icon icon="eye" />} style={Styles.Inputs} />
 
                         <TouchableOpacity onPress={openCamera} style={{ marginTop: 8 }}>
                             <Text style={Styles.btn1}>Capture Tea weight</Text>
@@ -313,7 +313,7 @@ const Styles = StyleSheet.create({
         margin: 10,
         borderRadius: 40,
         backgroundColor: 'rgb(221, 230, 237)',
-        color: "black",
+        color: "white",
         marginTop: -0,
         fontSize: 18,
     },
