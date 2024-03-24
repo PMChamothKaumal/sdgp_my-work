@@ -94,7 +94,7 @@ function HomeT() {
     };
 
     const GetNotifications = () => {
-        fetch('http://192.168.1.104:3000/api/sdgp_database/Get_Notifications')
+        fetch('https://ts.teasage.social/api/sdgp_database/Get_Notifications')
             .then((response) => response.json())
             .then((responseJson) => {
                 // Sort the data by date in ascending order
@@ -133,7 +133,7 @@ function HomeT() {
                 return;
             }
 
-            const response = await Axios.post('http://192.168.1.104:3000/api/sdgp_database/Dispatch_TeaWeights', {
+            const response = await Axios.post('https://ts.teasage.social/api/sdgp_database/Dispatch_TeaWeights', {
                 estate_ID: selectId,
                 Dispatch_Weight: weight,
             });

@@ -72,7 +72,7 @@ function HomeO() {
         setLoading(true);
 
         if (Email) {
-            Axios.post('http://192.168.1.104:3000/api/sdgp_database/Notify_transporter', {
+            Axios.post('https://ts.teasage.social/api/sdgp_database/Notify_transporter', {
                 method: 'POST',
                 tea_state_id: Email,
                 notification: "Successfully notified"
@@ -114,7 +114,7 @@ function HomeO() {
         // Check if email is entered
         setLoading(true);
         if (Email) {
-            Axios.post('http://192.168.1.104:3000/api/sdgp_database/Weekly_Report', {
+            Axios.post('https://ts.teasage.social/api/sdgp_database/Weekly_Report', {
                 Email: Email,
             })
                 .then((response) => {

@@ -47,7 +47,7 @@ function Contact() {
                 problemInputRef.current.clear();
 
             } else {
-                Axios.post('http://192.168.1.103:3000/api/sdgp_database/Contact_Factory', {
+                Axios.post('https://ts.teasage.social/api/sdgp_database/Contact_Factory', {
                     method: 'POST',
                     Email: Email,
                     Problem: Problem,

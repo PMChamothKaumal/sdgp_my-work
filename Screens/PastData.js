@@ -51,7 +51,7 @@ function PastData() {
         // Check if email is entered
         setLoading(true);
         if (Email) {
-            Axios.post('http://192.168.1.104:3000/api/sdgp_database/Get_Past_Data', {
+            Axios.post('https://ts.teasage.social/api/sdgp_database/Get_Past_Data', {
                 Email: Email,
             })
                 .then((response) => {
